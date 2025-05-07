@@ -131,4 +131,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'assets']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
