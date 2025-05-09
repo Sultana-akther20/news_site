@@ -32,6 +32,7 @@ class Article(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     likes = models.ManyToManyField(User, related_name='liked_articles', blank=True)
     dislikes = models.ManyToManyField(User, related_name='disliked_articles', blank=True)
+    excerpt = models.TextField(blank=True)
     
     class Meta:
         ordering = ['-created_at']
@@ -49,3 +50,4 @@ class Article(models.Model):
     
     def total_dislikes(self):
         return self.dislikes.count()
+    
