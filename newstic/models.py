@@ -32,7 +32,8 @@ class Article(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     likes = models.ManyToManyField(User, related_name='liked_articles', blank=True)
     dislikes = models.ManyToManyField(User, related_name='disliked_articles', blank=True)
-    excerpt = models.TextField(blank=True)
+    excerpt = models.TextField(blank=True)  
+
     
     class Meta:
         ordering = ['-created_at']
@@ -51,3 +52,15 @@ class Article(models.Model):
     def total_dislikes(self):
         return self.dislikes.count()
     
+class Comment(models.Model):
+    post = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenters')
+    body = models.TextField()
+    approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Comment by {self.author.username} on {self.post.title}"
