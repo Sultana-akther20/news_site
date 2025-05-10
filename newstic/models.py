@@ -1,22 +1,9 @@
-
-"""
-class Article(models.Model):
-    title = models.CharField(max_length=250)
-    content = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='liked_articles', blank=True)
-    dislikes = models.ManyToManyField(User, related_name='disliked_articles', blank=True)
- 
-    
-    def __str__(self):
-        return self.title
-"""
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 # Create your models here.
+
 class Article(models.Model):
     STATUS_CHOICES = (
         (0, 'Draft'),
@@ -33,6 +20,7 @@ class Article(models.Model):
     likes = models.ManyToManyField(User, related_name='liked_articles', blank=True)
     dislikes = models.ManyToManyField(User, related_name='disliked_articles', blank=True)
     excerpt = models.TextField(blank=True)  
+    updated_at = models.DateTimeField(auto_now=True)
 
     
     class Meta:
@@ -64,3 +52,18 @@ class Comment(models.Model):
     
     def __str__(self):
         return f"Comment by {self.author.username} on {self.post.title}"
+    
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, default='draft', choices=[
+        ('draft', 'Draft'),
+        ('published', 'Published')
+    ])
+    total_likes = models.IntegerField(default=0)
+    total_dislikes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title    
