@@ -9,4 +9,5 @@ from .models import Article
 class ArticleList(generic.ListView):
     model = Article
     queryset = Article.objects.filter(status=1)
-    template_name = "newstic/Post_list.html"
+    template_name = "newstic/index.html"
+    paginate_by = 6
