@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('newstic/', newstic_views.tons_of_news, name='newstic'),
     path("", include("newstic.urls")),
+    path('summernote/', include('django_summernote.urls')),
 ]
