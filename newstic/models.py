@@ -56,6 +56,7 @@ class Comment(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+    excerpt = models.TextField(max_length=200, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, default='draft', choices=[
@@ -66,4 +67,9 @@ class Post(models.Model):
     total_dislikes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.title    
+        return self.title  
+
+    def save(self, *args, **kwargs):
+        if not self.excerpt:
+            self.excerpt = self.content[:200] + '...' if len(self.content) > 200 else self.content
+        super().save(*args, **kwargs)  
