@@ -9,7 +9,7 @@
         <!-- Blog Entries Column -->
         <div class="col-12 mt-3 left">
             <div class="row">
-                {% for post in post_list %}
+                {% for post in page_obj %}
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -23,7 +23,7 @@
                             </a>
 
                             <hr />
-                            <p class="card-text text-muted h6">{{ post.created_on}}
+                            <p class="card-text text-muted h6">{{ post.created_at}}
                             </p>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT </a></li>
             {% endif %}
         </ul>
     </nav>
@@ -49,4 +49,7 @@
 </div>
 
 <!-- index.html content ends here -->
+ {% block copyright %}
+    Copyright 2025 Sultana Akther
+{% endblock %}
 {% endblock %}
