@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-#from django.http import HttpResponse
+from django.http import HttpResponse
 from django.views import generic
 from .models import Article
+from django.contrib.admin.views.decorators import staff_member_required
+from .news_fetcher import fetch_latest_news
 
 # Create your views here.
 #def tons_of_news(request):
@@ -36,3 +38,8 @@ def post_detail(request, slug):
          "coders": "Sultana Akther"},
 
     )
+
+@staff_member_required
+def update_news(request):
+    fetch_latest_news()
+    return HttpResponse("News updated successfully.")

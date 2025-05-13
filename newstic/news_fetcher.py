@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 def fetch_latest_news():
     url = 'https://newsapi.org/v2/top-headlines'
     params = {
-        'country': 'us',  # You can change this to 'gb', 'in', etc.
-        'category': 'technology',  # Try 'general', 'business', etc.
-        'apiKey': 'a4e5c2ad9a564f55b74c6308aaee5824'
+        'sources': 'bbc-news,cnn,reuters',  # Major international news sources
+        'category': 'general',
+        'apiKey': 'https://newsapi.org/v2/top-headlines'
     }
-
+    
     response = requests.get(url, params=params)
     data = response.json()
 
