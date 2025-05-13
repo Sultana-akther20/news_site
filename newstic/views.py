@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import generic
 from .models import Article
 from django.contrib.admin.views.decorators import staff_member_required
 from .news_fetcher import fetch_latest_news
+import requests 
 
 # Create your views here.
 #def tons_of_news(request):
@@ -39,7 +40,25 @@ def post_detail(request, slug):
 
     )
 
+#@staff_member_required
+#def update_news(request):
+ #   fetch_latest_news()
+  #  return HttpResponse("News updated successfully.")
+
 @staff_member_required
-def update_news(request):
-    fetch_latest_news()
-    return HttpResponse("News updated successfully.")
+def fetch_news(request):
+    """Admin view to fetch latest news from an API"""
+    # Here you could use your fetch_latest_news function
+    url = 'https://newsapi.org/v2/top-headlines'
+    params = {
+        'sources': 'bbc-news,cnn,reuters',
+        'apiKey': 'a4e5c2ad9a564f55b74c6308aaee5824'  # Replace with your actual API key
+    }
+    
+    response = requests.get(url, params=params)
+    news_data = response.json()
+    
+    # Process and save news data to your database
+    # ...
+    
+    return JsonResponse({'status': 'success', 'message': 'News fetched successfully'})

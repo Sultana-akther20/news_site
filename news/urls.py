@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 #from newstic import views as newstic_views
+from newstic.views import fetch_news 
 
 urlpatterns = [
-    #path('', newstic_views.tons_of_news, name='home'),
     path('admin/', admin.site.urls),
     #path('newstic/', newstic_views.tons_of_news, name='newstic'),
     path("", include("newstic.urls")),
     path('summernote/', include('django_summernote.urls')),
     path("accounts/", include("allauth.urls")),
+    path('fetch-news/', fetch_news, name='fetch-news'),
 ]

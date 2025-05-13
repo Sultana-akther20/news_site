@@ -8,9 +8,9 @@ def fetch_latest_news():
     params = {
         'sources': 'bbc-news,cnn,reuters',  # Major international news sources
         'category': 'general',
-        'apiKey': 'https://newsapi.org/v2/top-headlines'
+        'apiKey': 'a4e5c2ad9a564f55b74c6308aaee5824'
     }
-    
+
     response = requests.get(url, params=params)
     data = response.json()
 
