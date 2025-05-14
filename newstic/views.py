@@ -5,6 +5,7 @@ from .models import Article
 from django.contrib.admin.views.decorators import staff_member_required
 from .news_fetcher import fetch_latest_news
 import requests 
+from .forms import Form
 
 # Create your views here.
 #def tons_of_news(request):
@@ -31,12 +32,16 @@ def post_detail(request, slug):
 
     queryset = Article.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
+    comments = post.comments.all().order_by("-created_at")
+    comment_count = post.comments.filter(approved=True).count()
 
     return render(
         request,
         "newstic/post_detail.html",
         {"post": post,
-         "coders": "Sultana Akther"},
+        "comments": comments,
+        "comment_count": comment_count,
+        "coders": "Sultana Akther"},
 
     )
 
