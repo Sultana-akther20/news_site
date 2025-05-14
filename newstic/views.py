@@ -35,12 +35,24 @@ def post_detail(request, slug):
     comments = post.comments.all().order_by("-created_at")
     comment_count = post.comments.filter(approved=True).count()
 
+    if request.method == "POST":
+        form = Form(data=request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            form = Form()  # Reset the form after successful submission
+    else:
+        form = Form()
+
     return render(
         request,
         "newstic/post_detail.html",
         {"post": post,
         "comments": comments,
         "comment_count": comment_count,
+        "form": form,
         "coders": "Sultana Akther"},
 
     )

@@ -26,4 +26,5 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path("accounts/", include("allauth.urls")),
     path('fetch-news/', fetch_news, name='fetch-news'),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
