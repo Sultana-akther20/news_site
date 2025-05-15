@@ -8,8 +8,8 @@ from .news_fetcher import fetch_latest_news
 import requests 
 from .models import Article
 from .forms import Form
-
-
+from django.views.decorators.http import require_GET
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 class ArticleList(generic.ListView):
     model = Article
@@ -67,27 +67,41 @@ def post_detail(request, slug):
   #  return HttpResponse("News updated successfully.")
 
 #@staff_member_required
-def fetch_news(request):
-    """Admin view to fetch latest news from an API"""
+#def fetch_news(request):
+    #"""Admin view to fetch latest news from an API"""
     # Here you could use your fetch_latest_news function
-    url = 'https://newsapi.org/v2/top-headlines'
-    import os
-    api_key = os.getenv("NEWS_API_KEY")
-    if not api_key:
-        return JsonResponse({'status': 'error', 'message': 'API key not found'}, status=500)
+   # url = 'https://newsapi.org/v2/top-headlines'
+    #import os
+    #api_key = os.getenv("NEWS_API_KEY")
+    #if not api_key:
+     #   return JsonResponse({'status': 'error', 'message': 'API key not found'}, status=500)
 
-    url = 'https://newsapi.org/v2/top-headlines'
-    params = {
-        'sources': 'bbc-news,cnn,reuters',
-        'apiKey': api_key
-    }
+    #url = 'https://newsapi.org/v2/top-headlines'
+    #params = {
+     #   'sources': 'bbc-news,cnn,reuters',
+      #  'apiKey': api_key
     
-    response = requests.get(url, params=params)
-    news_data = response.json()
+    #}
+    
+    #response = requests.get(url, params=params)
+    #news_data = response.json()
     
     # You can now save news_data to the database
     
-    return JsonResponse({'status': 'success', 'message': 'News fetched successfully'})
+    #return JsonResponse({'status': 'success', 'message': 'News fetched successfully'})
+@user_passes_test(lambda u: u.is_superuser)
+@require_GET
+def fetch_news(request):
+    try:
+        created_count = fetch_latest_news()
+        return JsonResponse({
+            'status': 'success',
+            'message': f'News fetched successfully. {created_count} new article(s) added.'
+        })
+    except Exception as e:
+        print("❌ Error fetching news:", e)
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
 
 @login_required
 def like_article(request, slug):

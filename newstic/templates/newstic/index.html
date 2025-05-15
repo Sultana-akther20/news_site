@@ -55,9 +55,35 @@
     </nav>
     {% endif %}
 </div>
-{% if user.is_authenticated %}
-    <button id="fetchNewsBtn">Fetch Latest News</button>
-    
-{% endif %}
 
+{% if user.is_authenticated %}
+    <button id="fetchNewsBtn" type="button">Fetch Latest News</button>  
+{% endif %}
+{% block extra_scripts %}
+<script>
+    document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
+fetch("/fetch-news/")
+  .then(response => {
+    // Check if the response is JSON
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return response.json();
+    } else {
+      throw new Error("Server didn't return JSON");
+    }
+  })
+  .then(data => {
+    //console.log(data.message);
+    alert(data.message);
+    window.location.reload();
+  })
+  .catch(error => {
+    console.error("Fetch error:", error);
+    alert("Error fetching news. Please try again later.");
+  });
+    });
+</script>
+{% endblock extra_scripts %}
 {% endblock %}
+
+
