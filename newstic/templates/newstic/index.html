@@ -57,17 +57,7 @@
 </div>
 {% if user.is_authenticated %}
     <button id="fetchNewsBtn">Fetch Latest News</button>
-    <script>
-        document.getElementById("fetchNewsBtn").addEventListener("click", function() {
-            fetch("{% url 'fetch-news' %}")
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    location.reload();  // Refresh page to see new articles
-                });
-        });
-    </script>
+    
 {% endif %}
 
-<!-- index.html content ends here -->
 {% endblock %}
