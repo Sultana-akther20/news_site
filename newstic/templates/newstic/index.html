@@ -61,9 +61,10 @@
 {% endif %}
 {% block extra_scripts %}
 <script>
-    document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
-fetch("/fetch-news/")
-  .then(response => {
+document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
+
+    fetch("/fetch-news/")
+     .then(response => {
     // Check if the response is JSON
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
@@ -75,13 +76,14 @@ fetch("/fetch-news/")
   .then(data => {
     //console.log(data.message);
     alert(data.message);
-    window.location.reload();
+    //window.location.reload();
   })
-  .catch(error => {
+    .catch(error => {
     console.error("Fetch error:", error);
-    alert("Error fetching news. Please try again later.");
-  });
+    alert("You can't fetch any news. This buttton is only for admin users.");
+    
     });
+});
 </script>
 {% endblock extra_scripts %}
 {% endblock %}

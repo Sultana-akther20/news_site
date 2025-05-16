@@ -27,7 +27,7 @@ def fetch_latest_news():
     try:
         default_author = User.objects.get(username="Sultana")
     except User.DoesNotExist:
-        raise ValueError("❌ Default author user 'Sultana' does not exist.")
+        raise ValueError("Default author user 'Sultana' does not exist.")
 
     created_count = 0
     for item in articles:
@@ -52,5 +52,5 @@ def fetch_latest_news():
         )
         created_count += 1
 
-    print(f"✅ Created {created_count} new articles.")
+    print(f"Created {created_count} new articles.")
     return created_count 

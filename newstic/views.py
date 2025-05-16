@@ -1,21 +1,21 @@
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404,redirect, reverse
 from django.http import HttpResponse, JsonResponse
 from django.views import generic
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .news_fetcher import fetch_latest_news
 import requests 
-from .models import Article
+from .models import Article, Comment
 from .forms import Form
 from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseRedirect
 # Create your views here.
 class ArticleList(generic.ListView):
     model = Article
     queryset = Article.objects.filter(status=1)
     template_name = "newstic/index.html"
-    paginate_by = 6
+    paginate_by = 3
 
 
 def post_detail(request, slug):
@@ -61,34 +61,6 @@ def post_detail(request, slug):
 
     )
 
-#@staff_member_required
-#def update_news(request):
- #   fetch_latest_news()
-  #  return HttpResponse("News updated successfully.")
-
-#@staff_member_required
-#def fetch_news(request):
-    #"""Admin view to fetch latest news from an API"""
-    # Here you could use your fetch_latest_news function
-   # url = 'https://newsapi.org/v2/top-headlines'
-    #import os
-    #api_key = os.getenv("NEWS_API_KEY")
-    #if not api_key:
-     #   return JsonResponse({'status': 'error', 'message': 'API key not found'}, status=500)
-
-    #url = 'https://newsapi.org/v2/top-headlines'
-    #params = {
-     #   'sources': 'bbc-news,cnn,reuters',
-      #  'apiKey': api_key
-    
-    #}
-    
-    #response = requests.get(url, params=params)
-    #news_data = response.json()
-    
-    # You can now save news_data to the database
-    
-    #return JsonResponse({'status': 'success', 'message': 'News fetched successfully'})
 @user_passes_test(lambda u: u.is_superuser)
 @require_GET
 def fetch_news(request):
@@ -99,8 +71,8 @@ def fetch_news(request):
             'message': f'News fetched successfully. {created_count} new article(s) added.'
         })
     except Exception as e:
-        print("❌ Error fetching news:", e)
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+        print("Error fetching news:", e)
+        return JsonResponse({'status': 'error', 'message': str(e)})
 
 
 @login_required
@@ -126,3 +98,42 @@ def dislike_article(request, slug):
     else:
         article.dislikes.add(user)
     return redirect('post_detail', slug=slug)
+
+def edit(request, slug, comment_id):
+    """
+    view to edit comments
+    """
+    if request.method == "POST":
+
+        queryset = Article.objects.filter(status=1)
+        post = get_object_or_404(queryset, slug=slug)
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment_form = Form(data=request.POST, instance=comment)
+
+        if comment_form.is_valid() and comment.author == request.user:
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.approved = False
+            comment.save()
+            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error updating comment!')
+    
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+
+def delete_comment(request, slug, comment_id):
+    """
+    view to delete comment
+    """
+    queryset = Article.objects.filter(status=1)
+    post = get_object_or_404(queryset, slug=slug)
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    if comment.author == request.user:
+        comment.delete()
+        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
