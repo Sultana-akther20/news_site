@@ -39,7 +39,7 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['newstic.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -112,7 +112,7 @@ DATABASES = {
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net",
-    "https://*.up.railway.app",  # Add this line for Railway
+    "https://web-production-c9d5.up.railway.app" # Add this line for Railway
 ]
 
 
@@ -134,8 +134,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+Account_AUTHENTICATION_METHODS = ['username', 'email']
 
+ACCOUNT_EMAIL_SUBJUCT_PREFIX = '[Newstic]'
+SITE_DOMAIN = "web-production-c9d5.up.railway.app"
+SITE_NAME = "Newstic"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
