@@ -4,19 +4,20 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .news_fetcher import fetch_latest_news
-import requests 
 from .models import Article, Comment
 from .forms import Form
 from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
-class ArticleList(generic.ListView):
+class ArticleList(LoginRequiredMixin, generic.ListView ):
     model = Article
     queryset = Article.objects.filter(status=1)
     template_name = "newstic/index.html"
     paginate_by = 3
-
+    login_url = '/accounts/login/'  
 
 def post_detail(request, slug):
     """

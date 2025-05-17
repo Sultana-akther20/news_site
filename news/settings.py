@@ -13,20 +13,33 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+#from django.contrib.sites.models import Site
 
+# Add this:
+DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
+# Optional: if you’re using allauth
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'Sultana.akther2805@gmail.com'
+EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['newstic.up.railway.app', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -49,6 +62,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
