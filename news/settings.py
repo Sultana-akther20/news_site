@@ -37,7 +37,8 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
 
@@ -105,6 +106,12 @@ WSGI_APPLICATION = 'news.wsgi.application'
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
     #}
+#}
+#DATABASES = {
+    #'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+#}
+#DATABASES = {
+    #'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''), conn_max_age=600)
 #}
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
