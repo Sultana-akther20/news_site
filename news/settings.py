@@ -107,15 +107,21 @@ WSGI_APPLICATION = 'news.wsgi.application'
         #'NAME': BASE_DIR / 'db.sqlite3',
     #}
 #}
-#DATABASES = {
-    #'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-#}
+
+
+# Replace your current DATABASES configuration with this:
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get(
+            'DATABASE_URL',
+            f'postgres://postgres:{os.environ.get("POSTGRES_PASSWORD", "NPkJxwyxSmDLZGQKtlygbafewKLbCqBD")}@{os.environ.get("POSTGRES_HOST", "tramway.proxy.rlwy.net")}:{os.environ.get("POSTGRES_PORT", "42267")}/railway'
+        ),
+        conn_max_age=600
+    )
+}
 #DATABASES = {
     #'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''), conn_max_age=600)
 #}
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-}
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net",
