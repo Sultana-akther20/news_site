@@ -37,13 +37,13 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = True
 
 #ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    #'news_site.up.railway.app',
     'web-production-c9d5.up.railway.app',
     '.railway.app',  # allows all Railway subdomains
 ]
