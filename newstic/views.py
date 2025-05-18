@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404,redirect, reverse
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.http import JsonResponse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,6 +10,7 @@ from django.views.decorators.http import require_GET
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 class ArticleList(LoginRequiredMixin, generic.ListView ):
@@ -76,7 +77,20 @@ def fetch_news(request):
         return JsonResponse({'status': 'error', 'message': str(e)})
 
 
-@login_required
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # or your desired redirect
+        else:
+            messages.error(request, 'Your username or password is incorrect.')
+            return redirect('login')  # redirect back to login page
+    return render(request, 'login.html')
+
 def like_article(request, slug):
     article = get_object_or_404(Article, slug=slug)
     user = request.user
@@ -88,7 +102,7 @@ def like_article(request, slug):
         article.likes.add(user)
     return redirect('post_detail', slug=slug)
 
-@login_required
+
 def dislike_article(request, slug):
     article = get_object_or_404(Article, slug=slug)
     user = request.user

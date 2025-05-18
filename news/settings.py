@@ -40,8 +40,13 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 #DEBUG = False
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
-
+#ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'web-production-c9d5.up.railway.app',
+    '.railway.app',  # allows all Railway subdomains
+]
 
 # Application definition
 
@@ -185,3 +190,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
+PORT = os.environ.get('PORT', 8000)
