@@ -15,14 +15,17 @@ from dotenv import load_dotenv
 import dj_database_url
 #from django.contrib.sites.models import Site
 
-# Add this:
+load_dotenv()
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
 DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 # Optional: if you’re using allauth
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 
-load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
@@ -69,6 +72,7 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
+#LOGIN_URL = '/accounts/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -185,9 +189,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 # SECURITY WARNING: don't run with debug turned on in production!
-SECRET_KEY = os.environ.get("SECRET_KEY")
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+
+
 PORT = os.environ.get('PORT', 8000)
