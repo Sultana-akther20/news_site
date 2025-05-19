@@ -49,6 +49,7 @@ ALLOWED_HOSTS = [
     #'news_site.up.railway.app',
     'web-production-c9d5.up.railway.app',
     'web-production-ee409.up.railway.app',
+    'web-production-2953e.up.railway.app',
     '.railway.app',  # allows all Railway subdomains
 ]
 
