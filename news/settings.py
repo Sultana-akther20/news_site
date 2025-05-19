@@ -144,7 +144,8 @@ CSRF_TRUSTED_ORIGINS = [
    # "https://web-production-c9d5.up.railway.app" # Add this line for Railway
     "https://*.codeinstitute-ide.net",
     "https://web-production-c9d5.up.railway.app",
-    "https://web-production-ee409.up.railway.app",  # Add this line
+    "https://web-production-ee409.up.railway.app",
+    "https://web-production-2953e.up.railway.app"  # Add this line
     "https://*.railway.app" 
 ]
 
@@ -172,7 +173,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 Account_AUTHENTICATION_METHODS = ['username', 'email']
 
 ACCOUNT_EMAIL_SUBJUCT_PREFIX = '[Newstic]'
-SITE_DOMAIN = "web-production-c9d5.up.railway.app"
+SITE_DOMAIN = "web-production-2953e.up.railway.app"
 SITE_NAME = "Newstic"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
