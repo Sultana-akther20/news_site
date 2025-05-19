@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <!-- Blog Entries Column -->
+        <!-- Newstic Entries Column -->
         <div class="col-12 mt-3 left">
             <div class="row">
                 {% for post in page_obj %}
@@ -14,10 +14,6 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="image-container">
-                                <div class="image-flash">
-                                    <p class="author">Administrator: {{ post.author }}</p>
-                                    
-                                </div>
                             </div>
                             <a href="{% url 'post_detail' post.slug %}" class="post-link">
                                 <h2 class="card-title">{{ post.title }}</h2>

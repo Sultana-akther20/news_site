@@ -48,6 +48,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     #'news_site.up.railway.app',
     'web-production-c9d5.up.railway.app',
+    'web-production-ee409.up.railway.app',
     '.railway.app',  # allows all Railway subdomains
 ]
 
@@ -128,13 +129,22 @@ DATABASES = {
         conn_max_age=600
     )
 }
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')  # Simpler fallback for local development
+    )
+}
 #DATABASES = {
     #'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''), conn_max_age=600)
 #}
 
 CSRF_TRUSTED_ORIGINS = [
+   # "https://*.codeinstitute-ide.net",
+   # "https://web-production-c9d5.up.railway.app" # Add this line for Railway
     "https://*.codeinstitute-ide.net",
-    "https://web-production-c9d5.up.railway.app" # Add this line for Railway
+    "https://web-production-c9d5.up.railway.app",
+    "https://web-production-ee409.up.railway.app",  # Add this line
+    "https://*.railway.app" 
 ]
 
 
