@@ -3,6 +3,8 @@ from django.utils.text import slugify
 from .models import Article
 from django.contrib.auth.models import User
 
+# Fetch the latest news from NewsAPI and create Article objects
+# This function is called in the admin panel to fetch news
 def fetch_latest_news():
     url = 'https://newsapi.org/v2/top-headlines'
     params = {
@@ -13,8 +15,6 @@ def fetch_latest_news():
     response = requests.get(url, params=params)
     data = response.json()
 
-    print("Raw NewsAPI response:", data)  # DEBUG: View full response
-
     # Check for NewsAPI errors
     if data.get("status") != "ok":
         raise Exception(f"NewsAPI Error: {data.get('message', 'Unknown error')}")
@@ -23,21 +23,22 @@ def fetch_latest_news():
     if not articles:
         raise Exception("No 'articles' key in NewsAPI response or it is empty.")
 
-    # Set the default author
+    # default author
     try:
         default_author = User.objects.get(username="Sultana")
     except User.DoesNotExist:
         raise ValueError("Default author user 'Sultana' does not exist.")
-
+    
+    # skip articles with no title
     created_count = 0
     for item in articles:
         title = item.get('title')
         if not title:
-            continue  # skip articles with no title
-
+            continue  
+    # skip duplicates
         slug = slugify(title)
         if Article.objects.filter(slug=slug).exists():
-            continue  # skip duplicates
+            continue  
         
         content = item.get('content') or item.get('description') or "No content provided."
         excerpt = item.get('description', '')[:250]

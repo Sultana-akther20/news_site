@@ -5,7 +5,7 @@
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
 
- 
+
 <!DOCTYPE html>
 <html class="h-100" lang="en">
 
@@ -22,6 +22,11 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!--favocon links-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
 
 </head>
 
@@ -57,7 +62,7 @@
                     </li>
                     {% endif %}
                 </ul>
-                
+
             </div>
         </div>
     </nav>
@@ -66,11 +71,11 @@
 
         {% block content %}
         <!-- Content Goes here -->
-         {% if user.is_authenticated %}
-    <p class="text-end m-3">You are logged in as {{ user }}</p>
-    {% else %}
-    <p class="text-end m-3">You are not logged in</p>
-    {% endif %}
+        {% if user.is_authenticated %}
+        <p class="text-end m-3">You are logged in as {{ user }}</p>
+        {% else %}
+        <p class="text-end m-3">You are not logged in</p>
+        {% endif %}
         {% endblock content %}
 
     </main>
@@ -82,12 +87,12 @@
             Made by Sultana Akther
             {% endblock copyright %}
         </p>
-        <p class="m-0 text-center text-white">Follow us:          
+        <p class="m-0 text-center text-white">Follow us:
             <a href="https://www.instagram.com/linabegum2020" target="_blank" rel="noopener"><i
-                class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@sultana202021" target="_blank" rel="noopener"><i
-                class="fa-brands fa-tiktok"></i></a>
-        
+                    class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@sultana202021" target="_blank" rel="noopener"><i
+                    class="fa-brands fa-tiktok"></i></a>
+
         </p>
     </footer>
     <!--fontawesome script-->
@@ -101,4 +106,3 @@
 </body>
 
 </html>
-

@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-# Create your models here.
-
+#models are here.
+#article model
 class Article(models.Model):
     STATUS_CHOICES = (
         (0, 'Draft'),
@@ -41,7 +41,7 @@ class Article(models.Model):
     
     def total_dislikes(self):
         return self.dislikes.count()
-    
+#comment model  
 class Comment(models.Model):
     post = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commenters')
