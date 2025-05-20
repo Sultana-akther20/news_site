@@ -18,6 +18,7 @@
                             <a href="{% url 'post_detail' post.slug %}" class="post-link">
                                 <h2 class="card-title">{{ post.title }}</h2>
                                  <p class="card-text">{{ post.excerpt }}</p>
+                                
                             </a>
 
                             <hr />
@@ -35,6 +36,7 @@
             </div>
         </div>
     </div>
+    <!--display prev and next button-->
     {% if is_paginated %}
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
@@ -52,10 +54,12 @@
     {% endif %}
 </div>
 
+<!--To display fetch button need login-->
 {% if user.is_authenticated %}
     <button id="fetchNewsBtn" type="button">Fetch Latest News</button>  
 {% endif %}
 {% block extra_scripts %}
+<!--fatching the news by using JavaScript-->
 <script>
 document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
 
@@ -70,9 +74,7 @@ document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
     }
   })
   .then(data => {
-    //console.log(data.message);
     alert(data.message);
-    //window.location.reload();
   })
     .catch(error => {
     console.error("Fetch error:", error);

@@ -13,7 +13,7 @@ def fetch_latest_news():
     response = requests.get(url, params=params)
     data = response.json()
 
-    print("🔍 Raw NewsAPI response:", data)  # DEBUG: View full response
+    print("Raw NewsAPI response:", data)  # DEBUG: View full response
 
     # Check for NewsAPI errors
     if data.get("status") != "ok":
@@ -38,7 +38,7 @@ def fetch_latest_news():
         slug = slugify(title)
         if Article.objects.filter(slug=slug).exists():
             continue  # skip duplicates
-
+        
         content = item.get('content') or item.get('description') or "No content provided."
         excerpt = item.get('description', '')[:250]
 
@@ -48,7 +48,8 @@ def fetch_latest_news():
             content=content,
             author=default_author,
             excerpt=excerpt,
-            status=1
+            status=1,
+            url=item.get('url')
         )
         created_count += 1
 

@@ -21,6 +21,8 @@ class Article(models.Model):
     dislikes = models.ManyToManyField(User, related_name='disliked_articles', blank=True)
     excerpt = models.TextField(blank=True)  
     updated_at = models.DateTimeField(auto_now=True)
+    url = models.URLField(max_length=500, blank=True, null=True) 
+
 
     
     class Meta:

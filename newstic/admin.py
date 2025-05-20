@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .news_fetcher import fetch_latest_news
 
 
-# Register your models here.
+# Register models for articles and comments
 @admin.register(Article)
 class ArticleAdmin(SummernoteModelAdmin):
     list_display = ('title', 'author', 'created_at', 'status', 'total_likes', 'total_dislikes')
@@ -31,7 +31,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'post', 'author', 'created_at', 'approved')
     list_filter = ('approved', 'created_at')
     search_fields = ('body',)
-
+    
+# to fetch the latest news only staff can access this
 @staff_member_required
 def fetch_news_view(request):
     fetch_latest_news()
