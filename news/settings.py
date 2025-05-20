@@ -26,7 +26,7 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build the paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -40,7 +40,7 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
 ALLOWED_HOSTS = [
@@ -50,6 +50,7 @@ ALLOWED_HOSTS = [
     'web-production-c9d5.up.railway.app',
     'web-production-ee409.up.railway.app',
     'web-production-2953e.up.railway.app',
+    'web-production-0cd0e.up.railway.app',
     '.railway.app',  # allows all Railway subdomains
 ]
 
@@ -73,7 +74,9 @@ INSTALLED_APPS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = 'login'
+#LOGIN_URL = 'login'
+LOGIN_URL = 'account_login'
+
 #LOGIN_URL = '/accounts/login/'
 
 MIDDLEWARE = [
@@ -145,7 +148,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net",
     "https://web-production-c9d5.up.railway.app",
     "https://web-production-ee409.up.railway.app",
-    "https://web-production-2953e.up.railway.app"  # Add this line
+    "https://web-production-2953e.up.railway.app",
+    "https://web-production-0cd0e.up.railway.app ", # Add this line
     "https://*.railway.app" 
 ]
 
@@ -173,7 +177,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 Account_AUTHENTICATION_METHODS = ['username', 'email']
 
 ACCOUNT_EMAIL_SUBJUCT_PREFIX = '[Newstic]'
-SITE_DOMAIN = "web-production-2953e.up.railway.app"
+SITE_DOMAIN = "web-production-0cd0e.up.railway.app"
 SITE_NAME = "Newstic"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

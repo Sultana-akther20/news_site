@@ -24,7 +24,7 @@
         <div class="col card mb-4 mt-3 left top">
             <div class="card-body">
                 <h2>{{ coders }}</h2>
-
+             <!--To read the full article-->
                 <p class="card-text">
                     {{ post.content|safe }}
                     {% if "[" in post.content and post.url %}
@@ -131,7 +131,7 @@
         </div>
     </div>
 </div>
-<!-- Delete confirmation modal -->
+<!-- Delete confirmation model -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
