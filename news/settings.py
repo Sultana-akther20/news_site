@@ -40,19 +40,16 @@ EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    #'news_site.up.railway.app',
-    'web-production-c9d5.up.railway.app',
-    'web-production-ee409.up.railway.app',
-    'web-production-2953e.up.railway.app',
-    'web-production-0cd0e.up.railway.app',
-    '.railway.app',  # allows all Railway subdomains
-]
+#ALLOWED_HOSTS = [
+    #'localhost',
+    #'127.0.0.1',
+    #'newstic2025.herokuapp.com',
+    #'.railway.app',  # allows all Railway subdomains
+#]
+ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -133,23 +130,16 @@ DATABASES = {
         conn_max_age=600
     )
 }
+# for heroku
+
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')  # Simpler fallback for local development
-    )
+    'default': dj_database_url.config(conn_max_age=600)
 }
-#DATABASES = {
-    #'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''), conn_max_age=600)
-#}
+
 
 CSRF_TRUSTED_ORIGINS = [
    # "https://*.codeinstitute-ide.net",
-   # "https://web-production-c9d5.up.railway.app" # Add this line for Railway
     "https://*.codeinstitute-ide.net",
-    "https://web-production-c9d5.up.railway.app",
-    "https://web-production-ee409.up.railway.app",
-    "https://web-production-2953e.up.railway.app",
-    "https://web-production-0cd0e.up.railway.app ", # Add this line
     "https://*.railway.app" 
 ]
 
@@ -202,9 +192,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_URL = '/static/'
+#STATICFILES_DIRS = [BASE_DIR / 'static']
+
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
