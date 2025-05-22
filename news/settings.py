@@ -119,19 +119,7 @@ WSGI_APPLICATION = 'news.wsgi.application'
     #}
 #}
 
-
-# Replace your current DATABASES configuration with this:
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get(
-            'DATABASE_URL',
-            f'postgres://postgres:{os.environ.get("POSTGRES_PASSWORD", "NPkJxwyxSmDLZGQKtlygbafewKLbCqBD")}@{os.environ.get("POSTGRES_HOST", "tramway.proxy.rlwy.net")}:{os.environ.get("POSTGRES_PORT", "42267")}/railway'
-        ),
-        conn_max_age=600
-    )
-}
 # for heroku
-
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
