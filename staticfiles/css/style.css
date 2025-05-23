@@ -1,12 +1,28 @@
 body {
-    background-color: #F9FAFC;
+    background-color: #4d4e4f;
 }
 
+/*.card {
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}*/
+
+
 .brand {
-    font-family: Lato, sans-serif;
-    font-size: 1.4rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
     font-weight: 700;
-    color: #4A4A4F;
+    color: black;
 }
 
 .light-bg {
@@ -18,7 +34,7 @@ body {
 }
 
 .main-bg {
-    background-color: #F9FAFC;
+    background-color: #f8e8ec;
 }
 
 .card {
@@ -139,9 +155,10 @@ body {
 
 .btn-like:hover,
 .btn-like:active {
-    color: #E84610;
+    color: #07471c;
     background: transparent;
-    border: none;
+    border: 1px solid #E84610;
+    border-radius: 5px;
 }
 
 .faded {

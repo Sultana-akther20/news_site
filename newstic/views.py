@@ -1,19 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views import generic
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .news_fetcher import fetch_latest_news
 from .models import Article, Comment
 from .forms import Form
 from django.views.decorators.http import require_GET
-from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import authenticate, login
+
 
 # Create your views here.
 class ArticleList(LoginRequiredMixin, generic.ListView ):
+    """Display list of articles."""
     model = Article
     queryset = Article.objects.filter(status=1)
     template_name = "newstic/index.html"
@@ -66,6 +66,7 @@ def post_detail(request, slug):
 @user_passes_test(lambda u: u.is_superuser)
 @require_GET
 def fetch_news(request):
+    """ONLY SUPERUSER CAN FETCH NEWS"""
     try:
         created_count = fetch_latest_news()
         return JsonResponse({
@@ -77,21 +78,9 @@ def fetch_news(request):
         return JsonResponse({'status': 'error', 'message': str(e)})
 
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # or your desired redirect
-        else:
-            messages.error(request, 'Your username or password is incorrect.')
-            return redirect('login')  # redirect back to login page
-    return render(request, 'login.html')
 
 def like_article(request, slug):
+    """Toggle the like status of an article."""
     article = get_object_or_404(Article, slug=slug)
     user = request.user
     if user in article.dislikes.all():
@@ -104,6 +93,7 @@ def like_article(request, slug):
 
 
 def dislike_article(request, slug):
+    """Toggle the dislike status of an article."""
     article = get_object_or_404(Article, slug=slug)
     user = request.user
     if user in article.likes.all():
