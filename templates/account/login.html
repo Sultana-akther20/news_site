@@ -1,46 +1,80 @@
+<!--The base template inherit by using extend-->
 {% extends "base.html" %}
 
+<!--for multilingual support, Django's internationalization library will load-->
 {% load i18n %}
+
+<!--Django allauth's account and socialaccount template will load-->
 {% load account socialaccount %}
 
+<!--Define the page title-->
 {% block head_title %}{% trans "Sign In" %}{% endblock head_title %}
 
+<!-- Main content block-->
 {% block content %}
 
-<h1>{% trans "Sign In" %}</h1>
+<div class="login">
+  <div class="card">
+    <!-- Main heading for the login page -->
+    <h2 class="login-title">{% trans "Sign In" %}</h2>
 
-{% get_providers as socialaccount_providers %}
+    <!-- Check if social accounts are available -->
+    {% if socialaccount_providers %}
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+    <!--Explaination of the login options to users and block translation-->
+    <p class="login-info">
+      {% blocktrans with site.name as site_name %}
+      Please sign in with one of your existing third party accounts. Or,
+      <a href="{{ signup_url }}">sign up</a> for a {{ site_name }} account and sign in below:
+      {% endblocktrans %}
+    </p>
 
-<div class="socialaccount_ballot">
+    <!-- Container for social account login and tell the templete this is for login not for signup and use or as divider  -->
+    <div class="socialaccount_ballot">
+      <ul class="socialaccount_providers">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+      </ul>
+      <div class="login-or">{% trans 'or' %}</div>
+    </div>
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+    <!-- Include any additional social account login elements -->
+    <!--{% include "socialaccount/snippets/login_extra.html" %}-->
 
-  <div class="login-or">{% trans 'or' %}</div>
 
+    {% else %}
+
+    <!--Users see the message for signup first -->
+    <p class="login-info">
+      {% blocktrans %}
+      If you have not created an account yet, then please
+      <a href="{{ signup_url }}">sign up</a> first.
+      {% endblocktrans %}
+    </p>
+    {% endif %}
+
+    <!--Login form element will submit data via HTTP POST to the login URL-->
+    <form class="login-form" method="POST" action="{% url 'account_login' %}">
+
+      <!-- Django CSRF token prevents cross-site request forgery for security - -->
+      {% csrf_token %}
+
+      <!-- Render the Django form fields as paragraphs like username, password etc -->
+      {{ form.as_p }}
+
+      <!-- Check if there's a redirect field value and to preserb the redirect destination-->
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+
+      <!--Password reset link for users-->
+      <a class="button link" href="{% url 'account_reset_password' %}">
+        {% trans "Forgot Password?" %}
+      </a>
+
+      <!-- Submit button-->
+      <button class="btn-signup" type="submit">{% trans "Sign In" %}</button>
+    </form>
+  </div>
 </div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
-{% endblock content %}
+<!-- End of content block -->
+{% endblock %}
