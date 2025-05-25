@@ -1,109 +1,134 @@
+<!--Django's static files loading-->
 {% load static %}
 
+<!-- Get the URL for home page, login page, signup page and logout page and store the variables -->
 {% url 'home' as home_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
 
-
+<!-- Standard HTML5 document declaration -->
 <!DOCTYPE html>
 <html class="h-100" lang="en">
-
 <head>
+    <!--Page title-->
     <title>Latest news</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <!-- Bootstrap CSS -->
+    
+    <!-- Bootstrap CSS - provides responsive grid system and UI components -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-    <!-- Custom CSS -->
+    
+    <!-- Custom CSS file-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!--favocon links-->
+    
+    <!-- Favicon links -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-
 </head>
 
+<!--Bootstrap classes for used-->
 <body class="d-flex flex-column h-100 main-bg">
-
-    <!-- Navigation -->
+    
+    <!-- Navigation section -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
+            <!--h1 title-->
             <h1>Latest News</h1>
+            
+            <!--Only visible on small screens as mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
+            <!-- Collapses on mobile -->
             <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                    <!-- Home navigation link -->
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page"
                             href="{% url 'home' %}">Home</a>
                     </li>
+                    
+                    <!--Conditional navigation for logout-->
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     {% else %}
+                    <!--register and login links will shown if not loggedin -->
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_signup' %}">Register</a>
                     </li>
+                    
+                    <!-- Login link -->
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>
-
             </div>
         </div>
     </nav>
-
+    
+    <!--Bootstrap flex classes used there -->
     <main class="flex-shrink-0 main-bg">
-
+        
+        <!--Child templates insert their content -->
         {% block content %}
-        <!-- Content Goes here -->
+        <!-- conditional for authentication status and showes messages -->
         {% if user.is_authenticated %}
         <p class="text-end m-3">You are logged in as {{ user }}</p>
         {% else %}
         <p class="text-end m-3">You are not logged in</p>
         {% endif %}
+        
+        <!-- End of content-->
         {% endblock content %}
-
     </main>
-
-    <!-- Footer -->
+    
+    <!-- Footer section -->
     <footer class="footer mt-auto py-3 dark-bg">
+        
+        <!-- Copyright paragraph with centered text -->
         <p class="m-0 text-center text-white">
-            {% block copyright %}
-            Made by Sultana Akther
-            {% endblock copyright %}
+            <!-- Copyright -->
+            {% block copyright %}Sultana Akther{% endblock copyright %}
         </p>
+        
+        <!-- Social media links-->
         <p class="m-0 text-center text-white">Follow us:
-            <a href="https://www.instagram.com/linabegum2020" target="_blank" rel="noopener"><i
-                    class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@sultana202021" target="_blank" rel="noopener"><i
-                    class="fa-brands fa-tiktok"></i></a>
-
+            <a href="https://www.instagram.com/linabegum2020" target="_blank" rel="noopener">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@sultana202021" target="_blank" rel="noopener">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
         </p>
     </footer>
-    <!--fontawesome script-->
+    
+    <!-- Font Awesome script-->
     <script src="https://kit.fontawesome.com/0e921207fe.js" crossorigin="anonymous"></script>
-    <!--bootstrap-->
+    
+    <!-- Bootstrap JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
-        </script>
+    </script>
+    
+    <!-- Block for additional scripts-->
     {% block extras %}
+    <!-- Custom JavaScript file -->
     <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}
+    
 </body>
-
 </html>
