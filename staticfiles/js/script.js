@@ -1,30 +1,3 @@
-//document.addEventListener("DOMContentLoaded", () => {
-  //console.log("Document is ready!");
-//getting the elements from the post_detail.html
-//const editButtons = document.getElementsByClassName("btn-edit");
-//const commentText = document.getElementById("id_body");
-//const commentForm = document.getElementById("commentForm");
-//const submitButton = document.getElementById("submitButton");
-//console.log("Modal Element:", deleteModal);
-//const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
-//const deleteModalElement = document.getElementById("deleteModal");
-  //  let deleteModal = null;
-    
-    //if (deleteModalElement) {
-      //  deleteModal = new bootstrap.Modal(deleteModalElement);
-        //console.log("Modal Element:", deleteModal);
-    //} else {
-      //  console.error("Delete modal element not found!");
-    //}
-
-//const deleteButtons = document.getElementsByClassName("btn-delete");
-//const deleteConfirm = document.getElementById("deleteConfirm");
-// Extract the slug from the current URL path, .split('/') splits the path into an array using '/' as delimiter
-// [2] gets the third element (index 2) which should be the slug
-//const slug = window.location.pathname.split('/')[2];
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Document is ready!");
     
@@ -60,31 +33,40 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Extract the slug from the current URL path
     const slug = window.location.pathname.split('/')[2];
-
-//edit button for edit a comment and a update button to show after editing to update the comment and 
-for (let button of editButtons) {
-  button.addEventListener("click", (e) => {
-    //get the comment Id from button custom attribute
-    let commentId = e.target.getAttribute("comment_id");
-    // Find the comment content by constructing the ID "comment" + commentId
-    let commentContent = document.getElementById(`comment${commentId}`).innerText;
-    commentText.value = commentContent;
-    submitButton.innerText = "Update";
-    commentForm.setAttribute("action", `edit_comment/${commentId}`);
-
-   // Form.setAttribute("action", `edit_comment/${commentId}`);
     
-  });
-}
-
-
-// delete button for delete a comment and a will ask for confirmation of deletion
-for (let button of deleteButtons) {
-  button.addEventListener("click", (e) => {
-    let commentId = e.target.getAttribute("comment_id");
-    deleteConfirm.href = `/${slug}/delete_comment/${commentId}`;
-    deleteModal.show();
-  });
-}
-
+    // Edit button for edit a comment and a update button to show after editing to update the comment
+    for (let button of editButtons) {
+        button.addEventListener("click", (e) => {
+            // Get the comment Id from button custom attribute
+            let commentId = e.target.getAttribute("comment_id");
+            // Find the comment content by constructing the ID "comment" + commentId
+            let commentContent = document.getElementById(`comment${commentId}`).innerText;
+            commentText.value = commentContent;
+            submitButton.innerText = "Update";
+            commentForm.setAttribute("action", `edit_comment/${commentId}`);
+        });
+    }
+    
+    // Delete button for delete a comment and will ask for confirmation of deletion
+    for (let button of deleteButtons) {
+        button.addEventListener("click", (e) => {
+            let commentId = e.target.getAttribute("comment_id");
+            
+            // Set the delete confirmation link
+            if (deleteConfirm) {
+                deleteConfirm.href = `/${slug}/delete_comment/${commentId}`;
+            }
+            
+            // Show modal only if it was created successfully
+            if (deleteModal) {
+                deleteModal.show();
+            } else {
+                console.error("Modal not available, using fallback");
+                // Fallback: use browser confirm dialog
+                if (confirm("Are you sure you want to delete this comment? This action cannot be undone.")) {
+                    window.location.href = `/${slug}/delete_comment/${commentId}`;
+                }
+            }
+        });
+    }
 });

@@ -1,49 +1,60 @@
-<!-- Extend to inherit from base.html-->
+
+<!-- Extend from base.html template to inherit the main page structure -->
 {% extends "base.html" %}
 
-<!-- Override the content-->
+<!-- Override the content block from base.html -->
 {% block content %}
-<!-- Bootstrap is used for styling an make the container responsive with full width -->
+
+<!-- HTML comment indicating this is the index.html file -->
+<!-- index.html-->
+
+<!-- HTML comment indicating Bootstrap is used for styling -->
+<!-- Used bootstrap -->
+
+<!-- Bootstrap container-fluid for full-width responsive container -->
 <div class="container-fluid">
     
-    <!-- used bootstrap class row to create horizontal layout -->
+    <!-- Bootstrap row to create horizontal layout -->
     <div class="row">
         
-        <!--Column for full width on all screens, margin-top, left alignment -->
+        <!-- News Entries Column - full width on all screens, margin-top, left alignment -->
         <div class="col-12 mt-3 left">
             
-            <!--news post cards design-->
+            <!-- Inner row for news post cards -->
             <div class="row">
                 
-                <!-- Django template loop-->
+                <!-- Django template loop - iterate through each post in page_obj -->
                 {% for post in page_obj %}
                 
-                <!-- Bootstrap column-->
-                <div class="col-md-6">
+                <!-- Bootstrap column - 4 columns wide on medium+ screens (3 cards per row) -->
+                <div class="col-md-4">
                     
                     <!-- Bootstrap card component with bottom margin -->
                     <div class="card mb-4">
                         
-                        <!--contains main content -->
+                        <!-- Card body contains the main content -->
                         <div class="card-body">
                             
-                            <!-- Empty image container div (no image is actually displayed) 
+                            <!-- Empty image container div (no image is actually displayed) -->
                             <div class="image-container">
-                            </div>-->
+                            </div>
                             
-                            <!-- Link for post detail page -->
+                            <!-- Link to individual post detail page -->
                             <a href="{% url 'post_detail' post.slug %}" class="post-link">
                                 
-                                <!--Used bootstrap for title-->
+                                <!-- Post title as h2 heading with Bootstrap card-title class -->
                                 <h2 class="card-title">{{ post.title }}</h2>
                                 
-                                <!-- Used bootstrap for post excerpt/summary -->
+                                <!-- Post excerpt/summary with Bootstrap card-text class -->
                                 <p class="card-text">{{ post.excerpt }}</p>
                                 
                             </a>
+                            
+                            <!-- Horizontal rule to separate content from date -->
                             <hr />
                             
-                            <!--Used bootstrap for styling the created details-->
+                            <!-- Post creation date with Bootstrap text styling classes -->
+                            <!-- text-muted makes text gray, h6 makes it smaller -->
                             <p class="card-text text-muted h6">{{ post.created_at}}
                             </p>
                             
@@ -51,104 +62,124 @@
                     </div>
                 </div>
                 
-                <!-- Django template loop logic-->
+                <!-- Django template logic - check if current loop counter is divisible by 3 -->
                 {% if forloop.counter|divisibleby:3 %}
                 
-            </div>
+            </div><!-- Close current row after every 3 cards -->
             
+            <!-- Start a new row for next set of cards -->
             <div class="row">
                 
                 <!-- End of divisible by 3 check -->
                 {% endif %}
                 
-                <!--for loop end-->
+                <!-- End of for loop -->
                 {% endfor %}
                 
-            </div>
-        </div>
-    </div>
+            </div><!-- Close the final row -->
+        </div><!-- Close news entries column -->
+    </div><!-- Close main row -->
     
-    <!--Pagination section-->
+    <!-- Pagination section - only show if pagination is enabled -->
     {% if is_paginated %}
     
-    <!-- Bootstrap navigation -->
+    <!-- Bootstrap navigation component for pagination -->
     <nav aria-label="Page navigation">
         
-        <!-- Bootstrap for centered-->
+        <!-- Bootstrap pagination list with centered alignment -->
         <ul class="pagination justify-content-center">
             
-            <!-- Check for the previous page-->
+            <!-- Check if there's a previous page available -->
             {% if page_obj.has_previous %}
             
-            <!-- List for previous page-->
+            <!-- List item for previous page link -->
             <li>
-                <!--Bootstrap used for previous link-->
+                <!-- Link to previous page with Bootstrap page-link class -->
                 <a href="?page={{ page_obj.previous_page_number }}"
                   class="page-link">&laquo; PREV</a>
             </li>
             
-            <!-- End check -->
+            <!-- End of has_previous check -->
             {% endif %}
             
-            <!-- Check for next page-->
+            <!-- Check if there's a next page available -->
             {% if page_obj.has_next %}
             
-            <!-- List item for next page link and used bootstrap-->
+            <!-- List item for next page link -->
             <li>
+                <!-- Link to next page with Bootstrap page-link class -->
                 <a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT </a>
             </li>
             
-            <!-- End -->
+            <!-- End of has_next check -->
             {% endif %}
             
         </ul>
     </nav>
     
-    <!-- End of paginated-->
+    <!-- End of is_paginated check -->
     {% endif %}
     
-</div>
+</div><!-- Close container-fluid -->
 
-<!--Authenticate for users -->
+<!-- Fetch news button - only show to authenticated users -->
 {% if user.is_authenticated %}
 
-    <!-- Button to fetch latest news -->
+    <!-- Button to fetch latest news - only visible to logged-in users -->
     <button id="fetchNewsBtn" type="button">Fetch Latest News</button>  
+    
+<!-- End of authentication check -->
 {% endif %}
 
-<!-- Block for extra script-->
+<!-- Block for extra scripts specific to this page -->
 {% block extra_scripts %}
 
+<!-- HTML comment indicating JavaScript for fetching news -->
+<!--fatching the news by using JavaScript-->
+
+<!-- JavaScript code block -->
 <script>
 
-// Add event listener to the fetch news button
+// Add event listener to the fetch news button (if it exists)
+// The ?. is optional chaining - prevents error if element doesn't exist
 document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
-    // Make HTTP GET request to the fetch-news endpoint and handle the response server
+    
+    // Make HTTP GET request to the fetch-news endpoint
     fetch("/fetch-news/")
+    
+     // Handle the response from the server
      .then(response => {
-        // Get the content-type header
+        
+        // Get the content-type header from the response
         const contentType = response.headers.get("content-type");
-        // Check if the response is JSON format then parse the response
+        
+        // Check if the response is JSON format
         if (contentType && contentType.includes("application/json")) {
+          
+          // If JSON, parse the response as JSON
           return response.json();
+          
         } else {
-          // If not error shown
+          
+          // If not JSON, throw an error
           throw new Error("Server didn't return JSON");
         }
         
       })
       
-      // Handle the parsed JSON data and show a message
+      // Handle the parsed JSON data
       .then(data => {
+        
+        // Show an alert with the message from the server
         alert(data.message);
         
       })
       
-      // catch the errors that occur during the fetch 
+      // Handle any errors that occur during the fetch operation
       .catch(error => {
         
         // Log the error to browser console for debugging
-        //console.error("Fetch error:", error);
+        console.error("Fetch error:", error);
         
         // Show user-friendly error message
         alert("You can't fetch any news. This buttton is only for admin users.");
@@ -157,5 +188,9 @@ document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
 });
 
 </script>
+
+<!-- End of extra_scripts block -->
 {% endblock extra_scripts %}
+
+<!-- End of content block -->
 {% endblock %}

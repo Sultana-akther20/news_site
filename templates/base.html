@@ -1,76 +1,100 @@
-<!--Django's static files loading-->
+
+
+
+<!-- Load Django's static files template tags to access CSS, JS, images -->
 {% load static %}
 
-<!-- Get the URL for home page, login page, signup page and logout page and store the variables -->
+<!-- Pre-define URL variables for use throughout the template -->
+<!-- Get the URL for home page and store in variable 'home_url' -->
 {% url 'home' as home_url %}
+<!-- Get the URL for login page and store in variable 'login_url' -->
 {% url 'account_login' as login_url %}
+<!-- Get the URL for signup page and store in variable 'signup_url' -->
 {% url 'account_signup' as signup_url %}
+<!-- Get the URL for logout page and store in variable 'logout_url' -->
 {% url 'account_logout' as logout_url %}
 
 <!-- Standard HTML5 document declaration -->
 <!DOCTYPE html>
+<!-- HTML element with classes for full height and English language -->
 <html class="h-100" lang="en">
+
 <head>
-    <!--Page title-->
+    <!-- Page title that appears in browser tab -->
     <title>Latest news</title>
+    
+    <!-- Viewport meta tag for responsive design on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
-    <!-- Font Awesome CSS -->
+    <!-- Font Awesome CSS - provides icons like social media icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <!-- Bootstrap CSS - provides responsive grid system and UI components -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     
-    <!-- Custom CSS file-->
+    <!-- Custom CSS file - loads our custom styles -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
-    <!-- Favicon links -->
+    <!-- Favicon links - small icons that appear in browser tabs and bookmarks -->
+    <!-- Apple touch icon for iOS devices -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <!-- Favicon for browsers - 32x32 pixels -->
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <!-- Favicon for browsers - 16x16 pixels -->
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
 </head>
 
-<!--Bootstrap classes for used-->
+<!-- Body element with Bootstrap classes for flexbox layout and full height -->
 <body class="d-flex flex-column h-100 main-bg">
     
     <!-- Navigation section -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <!-- Container for navbar content with fluid width -->
         <div class="container-fluid">
-            <!--h1 title-->
+            <!-- Site title/brand -->
             <h1>Latest News</h1>
             
-            <!--Only visible on small screens as mobile -->
+            <!-- Mobile hamburger menu button - only visible on small screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Three horizontal lines icon for mobile menu -->
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <!-- Collapses on mobile -->
+            <!-- Collapsible navigation menu - collapses on mobile -->
             <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Unordered list for navigation links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     
                     <!-- Home navigation link -->
                     <li class="nav-item">
+                        <!-- Link with dynamic 'active' class if current page is home -->
                         <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page"
                             href="{% url 'home' %}">Home</a>
                     </li>
                     
-                    <!--Conditional navigation for logout-->
+                    <!-- Conditional navigation based on user authentication status -->
                     {% if user.is_authenticated %}
+                    <!-- If user is logged in, show logout link -->
                     <li class="nav-item">
+                        <!-- Logout link with dynamic 'active' class if current page is logout -->
                         <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     {% else %}
-                    <!--register and login links will shown if not loggedin -->
+                    <!-- If user is not logged in, show register and login links -->
+                    
+                    <!-- Register/Signup link -->
                     <li class="nav-item">
+                        <!-- Register link with dynamic 'active' class if current page is signup -->
                         <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_signup' %}">Register</a>
                     </li>
                     
                     <!-- Login link -->
                     <li class="nav-item">
+                        <!-- Login link with dynamic 'active' class if current page is login -->
                         <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page"
                             href="{% url 'account_login' %}">Login</a>
                     </li>
@@ -80,19 +104,25 @@
         </div>
     </nav>
     
-    <!--Bootstrap flex classes used there -->
+    <!-- Main content area with Bootstrap flex classes -->
     <main class="flex-shrink-0 main-bg">
         
-        <!--Child templates insert their content -->
+        <!-- Content block - this is where child templates insert their content -->
         {% block content %}
-        <!-- conditional for authentication status and showes messages -->
+        
+        <!-- Default content comment -->
+        <!-- Content Goes here -->
+        
+        <!-- Show user authentication status -->
         {% if user.is_authenticated %}
+        <!-- If user is logged in, show their username -->
         <p class="text-end m-3">You are logged in as {{ user }}</p>
         {% else %}
+        <!-- If user is not logged in, show not logged in message -->
         <p class="text-end m-3">You are not logged in</p>
         {% endif %}
         
-        <!-- End of content-->
+        <!-- End of content block -->
         {% endblock content %}
     </main>
     
@@ -101,32 +131,38 @@
         
         <!-- Copyright paragraph with centered text -->
         <p class="m-0 text-center text-white">
-            <!-- Copyright -->
-            {% block copyright %}Sultana Akther{% endblock copyright %}
+            <!-- Copyright block - can be overridden by child templates -->
+            {% block copyright %}
+            Sultana Akther
+            {% endblock copyright %}
         </p>
         
-        <!-- Social media links-->
+        <!-- Social media links paragraph -->
         <p class="m-0 text-center text-white">Follow us:
+            <!-- Instagram link - opens in new tab with security attributes -->
             <a href="https://www.instagram.com/linabegum2020" target="_blank" rel="noopener">
+                <!-- Instagram icon from Font Awesome -->
                 <i class="fa-brands fa-instagram"></i>
             </a>
+            <!-- TikTok link - opens in new tab with security attributes -->
             <a href="https://www.tiktok.com/@sultana202021" target="_blank" rel="noopener">
+                <!-- TikTok icon from Font Awesome -->
                 <i class="fa-brands fa-tiktok"></i>
             </a>
         </p>
     </footer>
     
-    <!-- Font Awesome script-->
+    <!-- Font Awesome JavaScript - enables Font Awesome icons -->
     <script src="https://kit.fontawesome.com/0e921207fe.js" crossorigin="anonymous"></script>
     
-    <!-- Bootstrap JavaScript-->
+    <!-- Bootstrap JavaScript - enables Bootstrap interactive components -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     
-    <!-- Block for additional scripts-->
+    <!-- Block for additional scripts - child templates can add their own JavaScript -->
     {% block extras %}
-    <!-- Custom JavaScript file -->
+    <!-- Load custom JavaScript file -->
     <script src="{% static 'js/script.js' %}"></script>
     {% endblock %}
     
