@@ -204,7 +204,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PORT = os.environ.get('PORT', 8000)
 # Temporarily allow iframe embedding for mockup generation
 
-X_FRAME_OPTIONS = 'ALLOWALL'
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = False  # Only if not using HTTPS
-SESSION_COOKIE_SAMESITE = 'None'
