@@ -1,142 +1,80 @@
 
-<!-- Extend from base.html template to inherit the main page structure -->
+<!-- Extend from base.html-->
 {% extends 'base.html' %}
 
-<!-- Load Django's static files template tags to access images, CSS, JS -->
+<!--Django's static files loading-->
 {% load static %}
 
 <!-- Override the content block from base.html -->
 {% block content %}
 
-<!-- HTML comment indicating Bootstrap is used for styling -->
-<!--Used bootstrap-->
-
-<!-- HTML comment indicating this section displays news posts -->
-<!--display news posts-->
-
-<!-- Hero/masthead section for the article header -->
+<!--Bootstrap is used for styling -->
 <div class="masthead">
-    
-    <!-- Bootstrap container for responsive layout -->
     <div class="container">
-        
-        <!-- Bootstrap row with no gutters (g-0 removes spacing between columns) -->
         <div class="row g-0">
-            
-            <!-- Left column for text content - 6 columns wide on medium+ screens -->
+            <!--6 columns wide on medium+ screens-->
             <div class="col-md-6 masthead-text">
-                
-                <!-- Article title as main heading -->
+                <!--Article title-->
                 <h1 class="post-title">{{ post.title }}</h1>
-                
                 <!-- Article publication date -->
-                <p class="post-subtitle">{{ post.created_at }}</p>
-                
+                <p class="post-subtitle">{{ post.created_at }}</p>   
             </div>
-            
-            <!-- HTML comment indicating image display section -->
             <!--display Image-->
-            
-            <!-- Right column for image - hidden on small screens, visible on medium+ -->
             <div class="d-none d-md-block col-md-6 masthead-image">
-                
                 <!-- Static image with responsive scaling -->
                 <img src="{% static 'images/planet.jpg' %}" class="scale" alt="Planet Image">
-                
             </div>
         </div>
     </div>
 </div>
 
-<!-- Main content container -->
 <div class="container">
-    
-    <!-- Row for article content -->
     <div class="row">
         
-        <!-- Full width column with card styling and margins -->
+        <!-- Full width column-->
         <div class="col card mb-4 mt-3 left top">
-            
-            <!-- Card body contains the article content -->
             <div class="card-body">
-                
-                <!-- Heading that displays a variable called 'coders' -->
-                <h2>{{ coders }}</h2>
-                
-                <!-- HTML comment about reading full article -->
-                <!--To read the full article-->
-                
-                <!-- Article content paragraph -->
+                <!-- Article content-->
                 <p class="card-text">
-                    
-                    <!-- Display post content with HTML tags rendered (|safe filter) -->
                     {{ post.content|safe }}
-                    
-                    <!-- Check if post content contains "[" character AND post has a URL -->
                     {% if "[" in post.content and post.url %}
-                    
-                    <!-- Add line break -->
                     <br>
-                    
                     <!-- Link to full article - opens in new tab with security attributes -->
                     <a href="{{ post.url }}" target="_blank" rel="noopener noreferrer">
                         Read full article
                     </a>
-                    
-                    <!-- End of conditional check -->
                     {% endif %}
-                    
                 </p>
             </div>
         </div>
     </div>
     
-    <!-- Comment count section -->
+    <!--Comment count-->
     <div class="row">
-        
-        <!-- Full width column -->
-        <div class="col-12">
-            
-            <!-- Strong text with secondary color showing comment count -->
+        <div class="col-md-6">
             <strong class="text-secondary">
-                
                 <!-- Font Awesome comment icon -->
                 <i class="far fa-comments"></i> {{ comment_count }}
-                
             </strong>
         </div>
         
-        <!-- Full width column with horizontal rule separator -->
+        <!-- Full width column -->
         <div class="col-12">
             <hr>
         </div>
     </div>
-    
-    <!-- HTML comment indicating comments display section -->
-    <!-- Display Comments-->
-    
-    <!-- Row for comments and comment form -->
     <div class="row">
-        
-        <!-- Left column for displaying existing comments - 8 columns wide -->
         <div class="col-md-8 card mb-4 mt-3">
             
-            <!-- Comments section heading -->
+            <!--heading-->
             <h3>Comments:</h3>
-            
-            <!-- Card body for comments list -->
             <div class="card-body">
-                
                 <!-- Loop through all comments -->
                 {% for comment in comments %}
                 
-                <!-- Only show comment if it's approved OR the current user is the author -->
+                <!--Comment will show if it's approved OR the current user is the superuser-->
                 {% if comment.approved or comment.author == user %}
-                
-                <!-- Individual comment container with conditional faded class -->
                 <div class="p-2 comments {% if not comment.approved %}faded{% endif %}">
-                    
-                    <!-- Comment author and date information -->
                     <p class="font-weight-bold">
                         
                         <!-- Comment author name in bold -->
@@ -144,104 +82,67 @@
                         
                         <!-- Comment date in normal weight -->
                         <span class="font-weight-normal">
-                            {{ comment.created_on }}
+                            {{ comment.created_at }}
                         </span> wrote:
-                        
                     </p>
-                    
-                    <!-- Comment content with unique ID for JavaScript targeting -->
                     <div id="comment{{ comment.id }}">
-                        
-                        <!-- Comment body with line breaks preserved -->
                         {{ comment.body|linebreaks }}
-                        
                     </div>
-                    
-                    <!-- Show approval message if comment is pending and user is author -->
                     {% if not comment.approved and comment.author == user %}
-                    
-                    <!-- Warning message about comment approval -->
+                    <!--Warning message about comment-->
                     <p class="approval text-warning">
                         This comment is awaiting approval
                     </p>
-                    
-                    <!-- End of approval check -->
                     {% endif %}
                     
-                    <!-- Show edit/delete buttons if user is authenticated and is comment author -->
+                    <!-- Show edit/delete buttons if user is commented-->
                     {% if user.is_authenticated and comment.author == user %}
                     
-                    <!-- Delete button with custom attribute for comment ID -->
-                    <button class="btn btn-delete" comment_id="{{ comment.id }}">Click To Delete The Comment</button>
-                    
-                    <!-- Edit button with custom attribute for comment ID -->
-                    <button class="btn btn-edit" comment_id="{{ comment.id }}">Click To Edit The Comment</button>
-                    
-                    <!-- End of authentication and author check -->
+                    <!-- Delete button and edit button with custom attribute for comment ID -->
+                    <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete The Comment</button>
+                    <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit The Comment</button>
                     {% endif %}
                     
                 </div>
-                
-                <!-- End of approved comment check -->
                 {% endif %}
                 
-                <!-- If no comments exist, show this message -->
+                <!--Show this message, if no comments exist -->
                 {% empty %}
                 
                 <p>No comments yet. Be the first to comment!</p>
-                
-                <!-- End of comments loop -->
-                {% endfor %}
-                
+                {% endfor %} 
             </div>
         </div>
         
-        <!-- Right column for comment form - 4 columns wide -->
+        <!--4 columns wide -->
         <div class="col-md-4 card mb-4 mt-3">
-            
-            <!-- Card body for comment form -->
             <div class="card-body">
-                
                 <!-- Comment form heading -->
                 <h3>Leave a comment:</h3>
                 
-                <!-- Show who is posting the comment -->
+                <!-- Show the user name -->
                 <p>Posting as: {{ user.username }}</p>
-                
-                <!-- Comment submission form with ID for JavaScript targeting -->
+
                 <form id="commentForm" method="post" style="margin-top: 1.3em;">
                     
                     <!-- Django CSRF token for security -->
                     {% csrf_token %}
-                    
-                    <!-- Form group for comment textarea -->
                     <div class="form-group">
-                        
-                        <!-- Label for comment field -->
-                        <label for="{{ form.body.id_for_label }}">Comment:</label>
-                        
-                        <!-- Comment textarea field -->
                         {{ form.body }}
-                        
-                        <!-- Display field errors if any -->
                         {% if form.body.errors %}
-                        
-                        <!-- Error messages in red text -->
                         <div class="text-danger">
                             {{ form.body.errors }}
                         </div>
-                        
-                        <!-- End of error check -->
                         {% endif %}
-                        
                     </div>
                     
-                    <!-- Submit button container with grid layout -->
+                    <!-- Submit button-->
                     <div class="d-grid gap-2 mt-4">
-                        
+                                                
                         <!-- Submit button with ID for JavaScript targeting -->
                         <button id="submitButton" type="submit" class="btn btn-primary btn-lg mt-3">Submit</button>
                         
+
                     </div>
                 </form>
                 
@@ -250,11 +151,7 @@
                     
                     <!-- Like button form -->
                     <form method="post" action="{% url 'like_article' post.slug %}">
-                        
-                        <!-- CSRF token for like form -->
                         {% csrf_token %}
-                        
-                        <!-- Like button showing current like count -->
                         <button type="submit" class="btn btn-outline-success">
                             Like ({{ post.likes.count }})
                         </button>
@@ -263,8 +160,6 @@
                     
                     <!-- Dislike button form -->
                     <form method="post" action="{% url 'dislike_article' post.slug %}">
-                        
-                        <!-- CSRF token for dislike form -->
                         {% csrf_token %}
                         
                         <!-- Dislike button showing current dislike count -->
@@ -279,21 +174,13 @@
     </div>
 </div>
 
-<!-- Delete confirmation modal dialog -->
+<!--Delete confirmation modal-->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    
-    <!-- Modal dialog container -->
     <div class="modal-dialog">
-        
-        <!-- Modal content wrapper -->
         <div class="modal-content">
-            
-            <!-- Modal header with title and close button -->
             <div class="modal-header">
-                
                 <!-- Modal title -->
                 <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
-                
                 <!-- Close button for modal -->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 
@@ -301,32 +188,18 @@
             
             <!-- Modal body with confirmation message -->
             <div class="modal-body">
-                Are you sure you want to delete your comment?
-                This action cannot be undone.
+                Click "Delete" to confirm deletion of this comment.
             </div>
-            
-            <!-- Modal footer with action buttons -->
             <div class="modal-footer">
-                
-                <!-- Cancel button -->
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                
-                <!-- Confirm delete link with ID for JavaScript targeting -->
                 <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
-                
             </div>
         </div>
     </div>
 </div>
-
-<!-- End of content block -->
 {% endblock content %}
-
-<!-- Override the extras block to include custom JavaScript -->
 {% block extras %}
 
-<!-- Load the custom JavaScript file for comment functionality -->
+<!-- Load the custom JavaScript file-->
 <script src="{% static 'js/script.js' %}"></script>
-
-<!-- End of extras block -->
 {% endblock %}

@@ -1,176 +1,112 @@
 
-<!-- Extend from base.html template to inherit the main page structure -->
+<!-- Extend from base.html-->
 {% extends "base.html" %}
 
-<!-- Override the content block from base.html -->
+<!-- Override the content -->
 {% block content %}
-
-<!-- HTML comment indicating this is the index.html file -->
-<!-- index.html-->
-
-<!-- HTML comment indicating Bootstrap is used for styling -->
-<!-- Used bootstrap -->
-
-<!-- Bootstrap container-fluid for full-width responsive container -->
+<!-- Used bootstrap for styling-->
 <div class="container-fluid">
-    
-    <!-- Bootstrap row to create horizontal layout -->
     <div class="row">
-        
-        <!-- News Entries Column - full width on all screens, margin-top, left alignment -->
+        <!--full width on all screens-->
         <div class="col-12 mt-3 left">
-            
-            <!-- Inner row for news post cards -->
             <div class="row">
-                
-                <!-- Django template loop - iterate through each post in page_obj -->
+                <!-- Django template loop-->
                 {% for post in page_obj %}
                 
-                <!-- Bootstrap column - 4 columns wide on medium+ screens (3 cards per row) -->
+                <!-- Bootstrap 4 columns wide-->
                 <div class="col-md-4">
                     
                     <!-- Bootstrap card component with bottom margin -->
                     <div class="card mb-4">
-                        
-                        <!-- Card body contains the main content -->
                         <div class="card-body">
                             
                             <!-- Empty image container div (no image is actually displayed) -->
-                            <div class="image-container">
-                            </div>
+                            <!--<div class="image-container"></div>-->
                             
                             <!-- Link to individual post detail page -->
                             <a href="{% url 'post_detail' post.slug %}" class="post-link">
                                 
-                                <!-- Post title as h2 heading with Bootstrap card-title class -->
+                                <!-- Post title-->
                                 <h2 class="card-title">{{ post.title }}</h2>
-                                
-                                <!-- Post excerpt/summary with Bootstrap card-text class -->
-                                <p class="card-text">{{ post.excerpt }}</p>
-                                
+                                <!-- Post excerpt/summary with Bootstrap-->
+                                <p class="card-text">{{ post.excerpt }}</p>  
                             </a>
-                            
-                            <!-- Horizontal rule to separate content from date -->
                             <hr />
                             
-                            <!-- Post creation date with Bootstrap text styling classes -->
-                            <!-- text-muted makes text gray, h6 makes it smaller -->
+                            <!-- Post creation date with Bootstrap-->
                             <p class="card-text text-muted h6">{{ post.created_at}}
                             </p>
-                            
                         </div>
                     </div>
                 </div>
                 
                 <!-- Django template logic - check if current loop counter is divisible by 3 -->
                 {% if forloop.counter|divisibleby:3 %}
-                
-            </div><!-- Close current row after every 3 cards -->
-            
-            <!-- Start a new row for next set of cards -->
+            </div>
             <div class="row">
-                
-                <!-- End of divisible by 3 check -->
                 {% endif %}
-                
-                <!-- End of for loop -->
                 {% endfor %}
                 
-            </div><!-- Close the final row -->
-        </div><!-- Close news entries column -->
-    </div><!-- Close main row -->
+            </div>
+        </div>>
+    </div>
     
-    <!-- Pagination section - only show if pagination is enabled -->
+    <!-- Pagination section-->
     {% if is_paginated %}
-    
-    <!-- Bootstrap navigation component for pagination -->
     <nav aria-label="Page navigation">
-        
-        <!-- Bootstrap pagination list with centered alignment -->
         <ul class="pagination justify-content-center">
             
             <!-- Check if there's a previous page available -->
             {% if page_obj.has_previous %}
-            
-            <!-- List item for previous page link -->
             <li>
                 <!-- Link to previous page with Bootstrap page-link class -->
                 <a href="?page={{ page_obj.previous_page_number }}"
                   class="page-link">&laquo; PREV</a>
             </li>
-            
-            <!-- End of has_previous check -->
             {% endif %}
-            
-            <!-- Check if there's a next page available -->
             {% if page_obj.has_next %}
-            
-            <!-- List item for next page link -->
             <li>
-                <!-- Link to next page with Bootstrap page-link class -->
                 <a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT </a>
             </li>
-            
-            <!-- End of has_next check -->
             {% endif %}
             
         </ul>
     </nav>
-    
-    <!-- End of is_paginated check -->
     {% endif %}
-    
-</div><!-- Close container-fluid -->
+</div>
 
-<!-- Fetch news button - only show to authenticated users -->
-{% if user.is_authenticated %}
+<!-- Fetch news button - only show to super user-->
+{% if user.is_superuser %}
 
-    <!-- Button to fetch latest news - only visible to logged-in users -->
+    <!-- Button to fetch latest news-->
     <button id="fetchNewsBtn" type="button">Fetch Latest News</button>  
-    
-<!-- End of authentication check -->
 {% endif %}
-
-<!-- Block for extra scripts specific to this page -->
 {% block extra_scripts %}
-
-<!-- HTML comment indicating JavaScript for fetching news -->
-<!--fatching the news by using JavaScript-->
-
 <!-- JavaScript code block -->
 <script>
 
-// Add event listener to the fetch news button (if it exists)
-// The ?. is optional chaining - prevents error if element doesn't exist
+// Add event listener to the fetch news button
 document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
     
-    // Make HTTP GET request to the fetch-news endpoint
+    // Make HTTP GET request to the fetch-news and handle the response from the server
     fetch("/fetch-news/")
-    
-     // Handle the response from the server
      .then(response => {
-        
-        // Get the content-type header from the response
         const contentType = response.headers.get("content-type");
         
-        // Check if the response is JSON format
+        // Check if the response is JSON format if so response as Json
         if (contentType && contentType.includes("application/json")) {
-          
-          // If JSON, parse the response as JSON
           return response.json();
-          
         } else {
-          
-          // If not JSON, throw an error
+          // If not JSON throw an error
           throw new Error("Server didn't return JSON");
         }
         
       })
       
-      // Handle the parsed JSON data
+      // Handle the parsed JSON data 
       .then(data => {
         
-        // Show an alert with the message from the server
+        // Show an alert message
         alert(data.message);
         
       })
@@ -188,9 +124,5 @@ document.getElementById("fetchNewsBtn")?.addEventListener("click", function () {
 });
 
 </script>
-
-<!-- End of extra_scripts block -->
 {% endblock extra_scripts %}
-
-<!-- End of content block -->
 {% endblock %}
