@@ -76,18 +76,19 @@
                 {% if comment.approved or comment.author == user %}
                 <div class="p-2 comments {% if not comment.approved %}faded{% endif %}">
                     <p class="font-weight-bold">
-                        
-                        <!-- Comment author name in bold -->
-                        {{ comment.author }}
-                        
-                        <!-- Comment date in normal weight -->
+                         <!-- Comment date in normal weight -->
                         <span class="font-weight-normal">
                             {{ comment.created_at }}
-                        </span> wrote:
-                    </p>
-                    <div id="comment{{ comment.id }}">
+                        </span> 
+                        <br>
+                        <!-- Comment author name in bold -->
+                        {{ comment.author }}
+                        wrote:
+                        <span id="comment{{ comment.id }}">
                         {{ comment.body|linebreaks }}
-                    </div>
+                        </span>   
+                    </p>
+                    
                     {% if not comment.approved and comment.author == user %}
                     <!--Warning message about comment-->
                     <p class="approval text-warning">

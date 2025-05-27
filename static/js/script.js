@@ -1,3 +1,7 @@
+/* jshint esversion: 6 */
+/* jshint esversion: 10 */
+/* global bootstrap */
+"use strict";
 document.addEventListener("DOMContentLoaded", function () {
     // Wait for Bootstrap to be available before initializing the script
     function waitForBootstrap(callback, maxAttempts = 50) {
