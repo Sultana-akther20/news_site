@@ -1,13 +1,9 @@
-
 <!-- Extend from base.html-->
 {% extends 'base.html' %}
-
 <!--Django's static files loading-->
 {% load static %}
-
 <!-- Override the content block from base.html -->
 {% block content %}
-
 <!--Bootstrap is used for styling -->
 <div class="masthead">
     <div class="container">
@@ -27,12 +23,11 @@
         </div>
     </div>
 </div>
-
 <div class="container">
+    <!-- FULL WIDTH ARTICLE CONTENT -->
     <div class="row">
-        
-        <!-- Full width column-->
-        <div class="col card mb-4 mt-3 left top">
+        <!-- Full width column for article content -->
+        <div class="col-12 card mb-4 mt-3">
             <div class="card-body">
                 <!-- Article content-->
                 <p class="card-text">
@@ -51,24 +46,22 @@
     
     <!--Comment count-->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
             <strong class="text-secondary">
                 <!-- Font Awesome comment icon -->
                 <i class="far fa-comments"></i> {{ comment_count }}
             </strong>
-        </div>
-        
-        <!-- Full width column -->
-        <div class="col-12">
             <hr>
         </div>
     </div>
+    
+    <!-- COMMENTS AND LEAVE COMMENT SIDE BY SIDE -->
     <div class="row">
-        <div class="col-md-8 card mb-4 mt-3">
-            
-            <!--heading-->
-            <h3>Comments:</h3>
+        <!-- LEFT SIDE - COMMENTS SECTION -->
+        <div class="col-md-6 card mb-4 mt-3">
             <div class="card-body">
+                <!--heading-->
+                <h3>Comments:</h3>
                 <!-- Loop through all comments -->
                 {% for comment in comments %}
                 
@@ -100,11 +93,12 @@
                     {% if user.is_authenticated and comment.author == user %}
                     
                     <!-- Delete button and edit button with custom attribute for comment ID -->
-                    <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete The Comment</button>
-                    <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit The Comment</button>
+                    <button class="btn btn-delete btn-sm" comment_id="{{ comment.id }}">Delete</button>
+                    <button class="btn btn-edit btn-sm" comment_id="{{ comment.id }}">Edit</button>
                     {% endif %}
                     
                 </div>
+                <hr>
                 {% endif %}
                 
                 <!--Show this message, if no comments exist -->
@@ -115,15 +109,14 @@
             </div>
         </div>
         
-        <!--4 columns wide -->
-        <div class="col-md-4 card mb-4 mt-3">
+        <!-- RIGHT SIDE - LEAVE A COMMENT SECTION -->
+        <div class="col-md-6 card mb-4 mt-3">
             <div class="card-body">
                 <!-- Comment form heading -->
                 <h3>Leave a comment:</h3>
                 
                 <!-- Show the user name -->
                 <p>Posting as: {{ user.username }}</p>
-
                 <form id="commentForm" method="post" style="margin-top: 1.3em;">
                     
                     <!-- Django CSRF token for security -->
@@ -143,7 +136,6 @@
                         <!-- Submit button with ID for JavaScript targeting -->
                         <button id="submitButton" type="submit" class="btn btn-primary btn-lg mt-3">Submit</button>
                         
-
                     </div>
                 </form>
                 
@@ -200,7 +192,6 @@
 </div>
 {% endblock content %}
 {% block extras %}
-
 <!-- Load the custom JavaScript file-->
 <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
