@@ -18,7 +18,7 @@ body {
 }
 
 .main-bg {
-    background-color: #d799c2; 
+    background-color: #f0c1e1; 
 }
 
 .card {
@@ -70,7 +70,6 @@ body {
 }
 
 .masthead-image:after {
-    content: "";
     position: absolute;
     top: 0;
     right: 90%;
@@ -85,12 +84,12 @@ body {
 
 .post-link {
     text-decoration: none;
-    color: #445261;
+    color: black;
 }
 
 .post-link:hover,
 .page-link {
-    color: #E84610;
+    color: #d91623;
 }
 
 .post-title {
@@ -100,7 +99,7 @@ body {
 
 .post-subtitle {
     margin-left: 5%;
-    color: lightgray;
+    color: black;
 }
 
 .btn-signup,
@@ -112,17 +111,17 @@ body {
 .btn-signup:hover,
 .btn-signup:active {
     background-color: #fff;
-    color: #23BBBB;
+    color: rgb(21, 21, 21);
 }
 
 .link {
-    color: #23BBBB;
+    color: black;
     text-decoration: none;
 }
 
 .link:hover,
 .link:active {
-    color: #445261;
+    color: #fbf7f4;
     text-decoration: underline;
 }
 
@@ -139,7 +138,7 @@ body {
 
 .btn-like:hover,
 .btn-like:active {
-    color: #07471c;
+    color: rgb(63, 158, 63);
     background: transparent;
     border: 1px solid #E84610;
     border-radius: 5px;
