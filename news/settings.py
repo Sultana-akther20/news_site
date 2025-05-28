@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 Django settings for news project.
 """
+
 from pathlib import Path
 import os
 from dotenv import load_dotenv
