@@ -9,50 +9,34 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
+"""
+Django settings for news project.
+"""
 from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-#from django.contrib.sites.models import Site
 
 load_dotenv()
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
-
-DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-
-# Optional: if you’re using allauth
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
-
-
-# Build the paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'Sultana.akther2805@gmail.com'
-EMAIL_HOST_PASSWORD = 'dchi lbua wnrs ponj'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# Security Settings
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-#ALLOWED_HOSTS = ['web-production-c9d5.up.railway.app', 'localhost', '127.0.0.1']
-#ALLOWED_HOSTS = [
-    #'localhost',
-    #'127.0.0.1',
-    #'newstic2025.herokuapp.com',
-    #'.railway.app',  # allows all Railway subdomains
-#]
-ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', 'localhost']
+# Update your Heroku domain here
+ALLOWED_HOSTS = [
+    '.herokuapp.com', 
+    '127.0.0.1', 
+    'localhost',
+    'newstic-9bd1594d1063.herokuapp.com'  # Your specific domain
+]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'newstic',
     'django.contrib.sites',
+    'newstic',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -69,17 +53,25 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-#LOGIN_URL = 'login'
-LOGIN_URL = 'account_login'
 
-#LOGIN_URL = '/accounts/login/'
-
+# Authentication
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'account_login'
+
+# Allauth settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Newstic]'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -112,41 +104,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'news.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-#DATABASES = {
-    #'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-    #}
-#}
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',  # fallback for local
+        default='sqlite:///db.sqlite3',  # fallback for local development
         conn_max_age=600,
         ssl_require=True
     )
 }
 
-# for heroku
-#DATABASES = {
-    #'default': dj_database_url.config(conn_max_age=600)
-#}
-
-
+# Security
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net",
-    "https://*.heroku.app" 
+    "https://*.herokuapp.com",
+    "https://newstic-9bd1594d1063.herokuapp.com"
 ]
 
-
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -162,45 +136,36 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-#ACCOUNT_AUTHENTICATION_METHOD = ['username', 'email']
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # Move to env var
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  # Move to env var
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'your-email@gmail.com')
 
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Newstic]'
+# Site settings
 SITE_DOMAIN = "newstic-9bd1594d1063.herokuapp.com"
 SITE_NAME = "Newstic"
+
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+# Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
+# Port (for local development)
 PORT = os.environ.get('PORT', 8000)
-# Temporarily allow iframe embedding for mockup generation
+
+
 
