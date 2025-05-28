@@ -1,5 +1,5 @@
 body {
-    background-color: #deaece;
+    background-color: #ffc0cb !important; 
 }
 
 .brand {
@@ -8,22 +8,28 @@ body {
     font-weight: 700;
     color: black;
 }
+
 .light-bg {
     background-color: #fff;
 }
+
 .dark-bg {
     background-color: #445261;
 }
+
 .main-bg {
-    background-color: #f0f8ff; /* Match this with body background */
+    background-color: #d799c2; 
 }
+
 .card {
     border: none;
     background-color: transparent;
 }
+
 .image-container {
     position: relative;
 }
+
 .image-flash {
     position: absolute;
     bottom: 5%;
@@ -31,15 +37,18 @@ body {
     left: -2px;
     background-color: #188181;
 }
+
 .scale {
     width: 100%;
     height: auto;
 }
+
 .author {
     color: white;
     margin: 4px;
     text-transform: uppercase;
 }
+
 .masthead {
     margin-top: 10px;
     overflow: hidden;
@@ -48,15 +57,18 @@ body {
     height: 33vh;
     width: 100%;
 }
+
 .masthead-text {
     background-color: #445261;
     color: white;
     position: relative;
 }
+
 .masthead-image {
     position: relative;
     overflow: hidden;
 }
+
 .masthead-image:after {
     content: "";
     position: absolute;
@@ -70,50 +82,61 @@ body {
     transform: skew(15deg);
     z-index: 100;
 }
+
 .post-link {
     text-decoration: none;
     color: #445261;
 }
+
 .post-link:hover,
 .page-link {
     color: #E84610;
 }
+
 .post-title {
     margin-top: 10%;
     margin-left: 5%;
 }
+
 .post-subtitle {
     margin-left: 5%;
     color: lightgray;
 }
+
 .btn-signup,
 .btn-edit {
     background-color: #188181;
     color: #fff;
 }
+
 .btn-signup:hover,
 .btn-signup:active {
     background-color: #fff;
     color: #23BBBB;
 }
+
 .link {
     color: #23BBBB;
     text-decoration: none;
 }
+
 .link:hover,
 .link:active {
     color: #445261;
     text-decoration: underline;
 }
+
 .btn-like {
     color: #E84610;
     border: none;
     background: transparent;
 }
+
 .btn-delete {
     color: #fff;
     background: #E84610;
 }
+
 .btn-like:hover,
 .btn-like:active {
     color: #07471c;
@@ -121,9 +144,11 @@ body {
     border: 1px solid #E84610;
     border-radius: 5px;
 }
+
 .faded {
     color: rgb(172, 175, 175);
 }
+
 .approval {
     color: rgb(222, 146, 168);
 }

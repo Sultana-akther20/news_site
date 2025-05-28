@@ -3,6 +3,7 @@
 /* global bootstrap */
 "use strict";
 
+
 // Delete functionality
 const deleteButtons = document.getElementsByClassName("btn-delete");
 const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
@@ -11,7 +12,7 @@ const deleteConfirm = document.getElementById("deleteConfirm");
 for (let button of deleteButtons) {
     button.addEventListener("click", (e) => {
         let commentId = e.target.getAttribute("comment_id");
-        deleteConfirm.href = `delete_comment/${commentId}`;
+        deleteConfirm.href = `delete_comment/${commentId}/`;
         deleteModal.show();
     });
 }
@@ -20,34 +21,22 @@ for (let button of deleteButtons) {
 const editButtons = document.getElementsByClassName("btn-edit");
 const editModal = new bootstrap.Modal(document.getElementById("editModal"));
 const editForm = document.getElementById("editForm");
-
-//for (let button of editButtons) {
-   // button.addEventListener("click", (e) => {
-        //let commentId = e.target.getAttribute("comment_id");
-       // let commentContent = document.getElementById(`comment${commentId}`).innerText.trim();
-        
-        // Set the form action URL
-        //editForm.action = `edit_comment/${commentId}`;
-        
-        // Populate the textarea with existing comment
-       // document.getElementById("id_body").value = commentContent;
-        
-        //editModal.show();
-   // });
-//}
+const editTextarea = document.getElementById("editTextarea");
 
 for (let button of editButtons) {
     button.addEventListener("click", (e) => {
         let commentId = e.target.getAttribute("comment_id");
-        let commentDiv = document.getElementById(`comment${commentId}`);
-        let commentContent = commentDiv.innerText.trim();
+        let commentText = e.target.getAttribute("comment_text");
         
         // Set the form action URL
-        editForm.action = `edit_comment/${commentId}`;
+        editForm.action = `edit_comment/${commentId}/`;
         
-        // Populate the textarea with existing comment
-        document.getElementById("id_body").value = commentContent;
+        // Pre-populate the textarea with current comment text
+        editTextarea.value = commentText;
         
         editModal.show();
     });
 }
+
+
+
