@@ -25,7 +25,6 @@
 </div>
 <div class="container">
     <div class="row">
-
         <!-- Full width column-->
         <div class="col card mb-4 mt-3 left top">
             <div class="card-body">
@@ -43,7 +42,6 @@
             </div>
         </div>
     </div>
-
     <!--Comment count-->
     <div class="row">
         <div class="col-md-12">
@@ -52,7 +50,6 @@
                 <i class="far fa-comments"></i> {{ comment_count }}
             </strong>
         </div>
-
         <!-- Full width column -->
         <div class="col-12">
             <hr>
@@ -60,13 +57,11 @@
     </div>
     <div class="row">
         <div class="col-md-6 card mb-4 mt-3">
-
             <!--heading-->
             <h3>Comments:</h3>
             <div class="card-body">
                 <!-- Loop through all comments -->
                 {% for comment in comments %}
-
                 <!--Comment will show if it's approved OR the current user is the superuser-->
                 {% if comment.approved or comment.author == user %}
                 <div class="p-2 comments {% if not comment.approved %}faded{% endif %}">
@@ -79,47 +74,40 @@
                         <!-- Comment author name in bold -->
                         {{ comment.author }}
                         wrote:
-                        <span id="comment{{ comment.id }}">
-                        {{ comment.body|linebreaks }}
-                        </span>   
-                    </p>
 
+                    </p>
+                    <div id="comment{{ comment.id }}">
+                        {{ comment.body|linebreaks }}
+
+                        </div> 
                     {% if not comment.approved and comment.author == user %}
                     <!--Warning message about comment-->
                     <p class="approval text-warning">
                         This comment is awaiting approval
                     </p>
                     {% endif %}
-
                     <!-- Show edit/delete buttons if user is commented-->
                     {% if user.is_authenticated and comment.author == user %}
-
                     <!-- Delete button and edit button with custom attribute for comment ID -->
                     <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete The Comment</button>
                     <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit The Comment</button>
                     {% endif %}
-
                 </div>
                 {% endif %}
-
                 <!--Show this message, if no comments exist -->
                 {% empty %}
-
                 <p>No comments yet. Be the first to comment!</p>
                 {% endfor %} 
             </div>
         </div>
-
         <!--4 columns wide -->
         <div class="col-md-6 card mb-4 mt-3">
             <div class="card-body">
                 <!-- Comment form heading -->
                 <h3>Leave a comment:</h3>
-
                 <!-- Show the user name -->
                 <p>Posting as: {{ user.username }}</p>
                 <form id="commentForm" method="post" style="margin-top: 1.3em;">
-
                     <!-- Django CSRF token for security -->
                     {% csrf_token %}
                     <div class="form-group">
@@ -130,37 +118,28 @@
                         </div>
                         {% endif %}
                     </div>
-
                     <!-- Submit button-->
                     <div class="d-grid gap-2 mt-4">
-
                         <!-- Submit button with ID for JavaScript targeting -->
                         <button id="submitButton" type="submit" class="btn btn-primary btn-lg mt-3">Submit</button>
-
                     </div>
                 </form>
-
                 <!-- Like & Dislike Buttons section -->
                 <div class="d-grid gap-2 mt-3">
-
                     <!-- Like button form -->
                     <form method="post" action="{% url 'like_article' post.slug %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-success">
                             Like ({{ post.likes.count }})
                         </button>
-
                     </form>
-
                     <!-- Dislike button form -->
                     <form method="post" action="{% url 'dislike_article' post.slug %}">
                         {% csrf_token %}
-
                         <!-- Dislike button showing current dislike count -->
                         <button type="submit" class="btn btn-outline-danger">
                             Dislike ({{ post.dislikes.count }})
                         </button>
-
                     </form>
                 </div>
             </div>
@@ -176,9 +155,7 @@
                 <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
                 <!-- Close button for modal -->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
             </div>
-
             <!-- Modal body with confirmation message -->
             <div class="modal-body">
                 Click "Delete" to confirm deletion of this comment.
@@ -190,8 +167,32 @@
         </div>
     </div>
 </div>
+<!--Edit comment modal-->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editForm" method="post">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_body">Comment:</label>
+                        <textarea class="form-control" name="body" id="id_body" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 {% block extras %}
 <!-- Load the custom JavaScript file-->
 <script src="{% static 'js/script.js' %}"></script>
-{% endblock %} 
+{% endblock %}

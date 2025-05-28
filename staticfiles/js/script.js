@@ -1,72 +1,53 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("Document is ready!");
-    
-    // Getting the elements from the post_detail.html
-    const editButtons = document.getElementsByClassName("btn-edit");
-    const commentText = document.getElementById("id_body");
-    const commentForm = document.getElementById("commentForm");
-    const submitButton = document.getElementById("submitButton");
-    
-    // Check if bootstrap is available
-    if (typeof bootstrap === 'undefined') {
-        console.error("Bootstrap is not loaded!");
-        return;
-    }
-    
-    // Get modal element and initialize
-    const deleteModalElement = document.getElementById("deleteModal");
-    let deleteModal = null;
-    
-    if (deleteModalElement) {
-        try {
-            deleteModal = new bootstrap.Modal(deleteModalElement);
-            console.log("Modal created successfully");
-        } catch (error) {
-            console.error("Error creating modal:", error);
-        }
-    } else {
-        console.error("Delete modal element not found!");
-    }
-    
-    const deleteButtons = document.getElementsByClassName("btn-delete");
-    const deleteConfirm = document.getElementById("deleteConfirm");
-    
-    // Extract the slug from the current URL path
-    const slug = window.location.pathname.split('/')[2];
-    
-    // Edit button for edit a comment and a update button to show after editing to update the comment
-    for (let button of editButtons) {
-        button.addEventListener("click", (e) => {
-            // Get the comment Id from button custom attribute
-            let commentId = e.target.getAttribute("comment_id");
-            // Find the comment content by constructing the ID "comment" + commentId
-            let commentContent = document.getElementById(`comment${commentId}`).innerText;
-            commentText.value = commentContent;
-            submitButton.innerText = "Update";
-            commentForm.setAttribute("action", `edit_comment/${commentId}`);
-        });
-    }
-    
-    // Delete button for delete a comment and will ask for confirmation of deletion
-    for (let button of deleteButtons) {
-        button.addEventListener("click", (e) => {
-            let commentId = e.target.getAttribute("comment_id");
-            
-            // Set the delete confirmation link
-            if (deleteConfirm) {
-                deleteConfirm.href = `/${slug}/delete_comment/${commentId}`;
-            }
-            
-            // Show modal only if it was created successfully
-            if (deleteModal) {
-                deleteModal.show();
-            } else {
-                console.error("Modal not available, using fallback");
-                // Fallback: use browser confirm dialog
-                if (confirm("Are you sure you want to delete this comment? This action cannot be undone.")) {
-                    window.location.href = `/${slug}/delete_comment/${commentId}`;
-                }
-            }
-        });
-    }
-});
+/* jshint esversion: 6 */
+/* jshint esversion: 10 */
+/* global bootstrap */
+"use strict";
+
+// Delete functionality
+const deleteButtons = document.getElementsByClassName("btn-delete");
+const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+const deleteConfirm = document.getElementById("deleteConfirm");
+
+for (let button of deleteButtons) {
+    button.addEventListener("click", (e) => {
+        let commentId = e.target.getAttribute("comment_id");
+        deleteConfirm.href = `delete_comment/${commentId}`;
+        deleteModal.show();
+    });
+}
+
+// Edit functionality
+const editButtons = document.getElementsByClassName("btn-edit");
+const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+const editForm = document.getElementById("editForm");
+
+//for (let button of editButtons) {
+   // button.addEventListener("click", (e) => {
+        //let commentId = e.target.getAttribute("comment_id");
+       // let commentContent = document.getElementById(`comment${commentId}`).innerText.trim();
+        
+        // Set the form action URL
+        //editForm.action = `edit_comment/${commentId}`;
+        
+        // Populate the textarea with existing comment
+       // document.getElementById("id_body").value = commentContent;
+        
+        //editModal.show();
+   // });
+//}
+
+for (let button of editButtons) {
+    button.addEventListener("click", (e) => {
+        let commentId = e.target.getAttribute("comment_id");
+        let commentDiv = document.getElementById(`comment${commentId}`);
+        let commentContent = commentDiv.innerText.trim();
+        
+        // Set the form action URL
+        editForm.action = `edit_comment/${commentId}`;
+        
+        // Populate the textarea with existing comment
+        document.getElementById("id_body").value = commentContent;
+        
+        editModal.show();
+    });
+}
