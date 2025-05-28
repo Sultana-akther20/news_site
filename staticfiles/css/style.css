@@ -144,10 +144,35 @@ body {
     border-radius: 5px;
 }
 
-.faded {
-    color: rgb(172, 175, 175);
+
+/* Change comment author names and dates to black */
+.comment-header,
+.comment-header strong,
+.comment-header small {
+    color: #000000;
 }
 
+
 .approval {
-    color: rgb(222, 146, 168);
+    color: #000000;
+}
+
+.faded {
+    color: #000000; 
+}
+
+
+.comment-body {
+    color: #000000;
+}
+
+
+small.text-muted {
+    color: #000000;
+}
+
+
+.comment .author,
+.comment strong {
+    color: #000000;
 }
