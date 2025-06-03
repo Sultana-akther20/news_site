@@ -105,14 +105,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'news.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',  # fallback for local development
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
+
+# Database - CORRECTED VERSION, handles both production (Heroku with PostgreSQL) and local development
+if 'DATABASE_URL' in os.environ:
+    # Production database (Heroku PostgreSQL)
+    DATABASES = {
+        'default': dj_database_url.parse(
+            os.environ.get("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Local development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 # Security
 CSRF_TRUSTED_ORIGINS = [
