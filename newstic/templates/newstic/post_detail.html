@@ -90,8 +90,8 @@
                     {% if user.is_authenticated and comment.author == user %}
                     <!-- Delete button and edit button with custom attribute for comment ID -->
                     <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete The Comment</button>
-                    <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit The Comment</button>
-                    {% endif %}
+                    <button class="btn btn-edit" comment_id="{{ comment.id }}" comment_text="{{ comment.body|escapejs }}">Edit The Comment</button>
+                      {% endif %}
                 </div>
                 {% endif %}
                 <!--Show this message, if no comments exist -->
@@ -153,6 +153,7 @@
             <div class="modal-header">
                 <!-- Modal title -->
                 <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+                
                 <!-- Close button for modal -->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -179,8 +180,8 @@
                 <div class="modal-body">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="id_body">Comment:</label>
-                        <textarea class="form-control" name="body" id="id_body" rows="5" required></textarea>
+                        <label for="editTextarea">Comment:</label>
+                        <textarea class="form-control" name="body" id="editTextarea" rows="5" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -7,7 +7,7 @@ urlpatterns = [
     path('fetch-news/', views.fetch_news, name='fetch_news'),
     path('<slug:slug>/like/', views.like_article, name='like_article'),
     path('<slug:slug>/dislike/', views.dislike_article, name='dislike_article'),
-    path('post/<slug:slug>/edit_comment/<int:comment_id>', views.edit, name='edit'),
+    path('post/<slug:slug>/edit_comment/<int:comment_id>/', views.edit, name='edit'),
     #path('<slug:slug>/edit_comment/<int:comment_id>', views.edit, name='edit'),
-    path('post/<slug:slug>/delete_comment/<int:comment_id>', views.delete_comment, name='delete_comment'),
+    path('post/<slug:slug>/delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]
