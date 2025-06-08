@@ -2,6 +2,8 @@
 /* jshint esversion: 10 */
 /* global bootstrap */
 "use strict";
+console.log("Script loaded successfully!");
+
 
 // Get the current post slug from the URL
 const currentPath = window.location.pathname;
@@ -24,6 +26,8 @@ if (deleteModalElement) {
     }
 }
 
+
+
 // Edit functionality - only if modal exists
 const editModalElement = document.getElementById("editModal");
 if (editModalElement) {
@@ -38,7 +42,7 @@ if (editModalElement) {
             let commentText = e.target.getAttribute("comment_text");
             
             // Set the form action URL with post slug
-            editForm.action = `/post/${postSlug}/edit_comment/${commentId}`;
+            editForm.action = `/post/${postSlug}/edit_comment/${commentId}/`;
             
             // Pre-populate the textarea with current comment text
             if (editTextarea && commentText) {
@@ -49,3 +53,9 @@ if (editModalElement) {
         });
     }
 }
+
+
+
+
+
+
