@@ -2,7 +2,6 @@
 /* jshint esversion: 10 */
 /* global bootstrap */
 "use strict";
-console.log("Script loaded successfully!");
 
 
 // Get the current post slug from the URL
